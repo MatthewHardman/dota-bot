@@ -8,12 +8,15 @@ module.exports = {
     //const user2 = interaction.options.getUser("387741979926331402");
     const message = await interaction.reply({
       content:
-        "Time to play, please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.",
+        "Hello <@1071259658943217745> Time to play, please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.",
       fetchReply: true,
     });
-    message.react("👍");
+    /*const reactionEmoji = message.guild.emojis.cache.find(
+      (emoji) => emoji.name === "dotes"
+    );*/
+    message.react("1075165683400314980");
     const filter = (reaction, user) => {
-      return ["👍"].includes(reaction.emoji.name);
+      return ["1075165683400314980"].includes(reaction.emoji.name);
     };
 
     const collector = message.createReactionCollector({ filter, time: 10000 });
