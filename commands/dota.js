@@ -8,20 +8,23 @@ module.exports = {
     //const user2 = interaction.options.getUser("387741979926331402");
     const message = await interaction.reply({
       content:
-        "Hello <@1071259658943217745> Time to play, please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.",
+        "Hello <@1071259658943217745>, Time to play, please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.",
       fetchReply: true,
     });
-    /*const reactionEmoji = message.guild.emojis.cache.find(
+    const reactionEmoji = message.guild.emojis.cache.find(
       (emoji) => emoji.name === "dotes"
-    );*/
-    message.react("1075165683400314980");
+    );
+    message.react(reactionEmoji);
     const filter = (reaction, user) => {
-      return ["1075165683400314980"].includes(reaction.emoji.name);
+      return [reactionEmoji].includes(reaction.emoji.name);
     };
-
-    const collector = message.createReactionCollector({ filter, time: 10000 });
-    stackSize = 2;
-    idArray = [];
+    const timeOut = 600000; //in ms
+    const collector = message.createReactionCollector({
+      filter,
+      time: timeOut,
+    });
+    const stackSize = 5;
+    let idArray = [];
     collector.on("collect", (reaction, user) => {
       if (user != interaction.user) {
         idArray.push(user.id);
