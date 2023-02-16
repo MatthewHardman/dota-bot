@@ -18,18 +18,18 @@ module.exports = {
     const filter = (reaction, user) => {
       return [reactionEmoji].includes(reaction.emoji.name);
     };
-    const timeOut = 600000; //in ms
+    const timeOut = 60000; //in ms 600000 = 10 min
     const collector = message.createReactionCollector({
       filter,
       time: timeOut,
     });
-    const stackSize = 5;
+    let stackSize = 5;
     let idArray = [];
     collector.on("collect", (reaction, user) => {
       if (user != interaction.user) {
         idArray.push(user.id);
       }
-      if (idArray.length === stackSize) {
+      if (idArray.length == stackSize) {
         collector.stop();
       }
     });
