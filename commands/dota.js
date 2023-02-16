@@ -8,7 +8,7 @@ module.exports = {
     //const user2 = interaction.options.getUser("387741979926331402");
     const message = await interaction.reply({
       content:
-        "Hello <@1071259658943217745>, Time to play, please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.",
+        "Hello dota friends, time to play! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.",
       fetchReply: true,
     });
     /*const reactionEmoji = message.guild.emojis.cache.find(
