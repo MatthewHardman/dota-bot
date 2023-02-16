@@ -11,12 +11,12 @@ module.exports = {
         "Hello <@1071259658943217745>, Time to play, please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.",
       fetchReply: true,
     });
-    const reactionEmoji = message.guild.emojis.cache.find(
+    /*const reactionEmoji = message.guild.emojis.cache.find(
       (emoji) => emoji.name === "dotes"
-    );
-    message.react(reactionEmoji);
+    );*/
+    message.react("👍");
     const filter = (reaction, user) => {
-      return [reactionEmoji].includes(reaction.emoji.name);
+      return ["👍"].includes(reaction.emoji.name);
     };
     const timeOut = 600000; //in ms 600000 = 10 min
     const collector = message.createReactionCollector({
