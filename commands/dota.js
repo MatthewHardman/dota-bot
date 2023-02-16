@@ -18,7 +18,7 @@ module.exports = {
     const filter = (reaction, user) => {
       return [reactionEmoji].includes(reaction.emoji.name);
     };
-    const timeOut = 60000; //in ms 600000 = 10 min
+    const timeOut = 600000; //in ms 600000 = 10 min
     const collector = message.createReactionCollector({
       filter,
       time: timeOut,
