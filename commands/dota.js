@@ -3,12 +3,17 @@ const { SlashCommandBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("dota")
-    .setDescription("Pings all dota people"),
+    .setDescription("Pings all dota people")
+    .addIntegerOption((option) =>
+      option
+        .setName("input")
+        .setDescription("The minimum number of people you need to play")
+        .setRequired(true)
+    ),
   async execute(interaction) {
-    //const user2 = interaction.options.getUser("387741979926331402");
+    let stackSize = interaction.options.getInteger("input");
     const message = await interaction.reply({
-      content:
-        "Hello dota friends, time to play! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.",
+      content: ` Hello dota friends, ${interaction.user.username} would like to play with a stack size of ${stackSize}! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
       fetchReply: true,
     });
     /*const reactionEmoji = message.guild.emojis.cache.find(
@@ -23,7 +28,6 @@ module.exports = {
       filter,
       time: timeOut,
     });
-    let stackSize = 5;
     let idArray = [];
     collector.on("collect", (reaction, user) => {
       if (user != interaction.user) {
@@ -38,24 +42,15 @@ module.exports = {
       idArray.shift();
       idArray.push(interaction.user.id);
       if (idArray.length == stackSize) {
+        let replyMessage = `It's time to play!`;
         for (let i = 0; i < idArray.length; i++) {
-          message.reply(`Time to play <@${idArray[i]}>!`);
+          replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
+          console.log(replyMessage);
         }
+        message.reply(replyMessage);
       } else {
         message.reply("Not enough for a stack right now. Try again later!");
       }
     });
   },
-
-  /*
-    message
-      .awaitReactions({ filter, max: 3, time: 5000, errors: ["time"] })
-      .then((collected) => {
-        console.log(collected.users);
-        message.reply(`Thanks <@${user.id}> for the thumbs up!`);
-      })
-      .catch((collected) => {
-        message.reply("No one reacted!");
-      });
-      */
 };
