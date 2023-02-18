@@ -12,8 +12,6 @@ const client = new Client({
   ],
 });
 
-//client.user.setAvatar("./DotaBot.png");
-client.user.setActivity("Playing Dota");
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
@@ -42,3 +40,5 @@ for (const file of eventFiles) {
 }
 
 client.login(token);
+client.user.setAvatar("./DotaBot.png");
+client.user.setActivity("Playing Dota");
