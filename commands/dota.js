@@ -15,10 +15,10 @@ module.exports = {
       option
         .setName("timeOut")
         .setDescription("How long you're willing to wait - in minutes")
-    )
-    .setRequired(true)
-    .setMaxValue(30)
-    .setMinValue(5),
+        .setRequired(true)
+        .setMaxValue(30)
+        .setMinValue(5)
+    ),
   async execute(interaction) {
     let stackSize = interaction.options.getInteger("stackSize");
     let timeOut = interaction.options.getInteger("timeOut") * 60000;
