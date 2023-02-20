@@ -21,9 +21,10 @@ module.exports = {
     ),
   async execute(interaction) {
     let stackSize = interaction.options.getInteger("stacksize");
-    let timeOut = interaction.options.getInteger("timeout") * 60000;
+    let timeOutInMin = interaction.options.getInteger("timeout");
+    let timeOutInMS = timeOutInMin * 60000;
     const message = await interaction.reply({
-      content: ` Hello dota friends, ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait ${timeOut} minutes! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
+      content: ` Hello dota friends, ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait ${timeOutInMin} minutes! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
       fetchReply: true,
     });
     /*const reactionEmoji = message.guild.emojis.cache.find(
@@ -35,7 +36,7 @@ module.exports = {
     };
     const collector = message.createReactionCollector({
       filter,
-      time: timeOut,
+      time: timeOutInMS,
     });
     let idArray = [];
     collector.on("collect", (reaction, user) => {
