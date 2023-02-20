@@ -6,14 +6,24 @@ module.exports = {
     .setDescription("Pings all dota people")
     .addIntegerOption((option) =>
       option
-        .setName("input")
+        .setName("stackSize")
         .setDescription("The minimum number of people you need to play")
         .setRequired(true)
-    ),
+        .setMinValue(1)
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("timeOut")
+        .setDescription("How long you're willing to wait - in minutes")
+    )
+    .setRequired(true)
+    .setMaxValue(30)
+    .setMinValue(5),
   async execute(interaction) {
-    let stackSize = interaction.options.getInteger("input");
+    let stackSize = interaction.options.getInteger("stackSize");
+    let timeOut = timeOut * 60000;
     const message = await interaction.reply({
-      content: ` Hello dota friends, ${interaction.user.username} would like to play with a stack size of ${stackSize}! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
+      content: ` Hello dota friends, ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait ${timeOut} minutes! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
       fetchReply: true,
     });
     /*const reactionEmoji = message.guild.emojis.cache.find(
@@ -23,7 +33,6 @@ module.exports = {
     const filter = (reaction, user) => {
       return ["👍"].includes(reaction.emoji.name);
     };
-    const timeOut = 600000; //in ms 600000 = 10 min
     const collector = message.createReactionCollector({
       filter,
       time: timeOut,
