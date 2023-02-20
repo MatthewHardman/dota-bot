@@ -21,7 +21,7 @@ module.exports = {
     .setMinValue(5),
   async execute(interaction) {
     let stackSize = interaction.options.getInteger("stackSize");
-    let timeOut = timeOut * 60000;
+    let timeOut = interaction.options.getInteger("timeOut") * 60000;
     const message = await interaction.reply({
       content: ` Hello dota friends, ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait ${timeOut} minutes! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
       fetchReply: true,
