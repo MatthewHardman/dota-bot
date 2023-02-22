@@ -40,7 +40,7 @@ module.exports = {
     });
     let idArray = [];
     collector.on("collect", (reaction, user) => {
-      if (user != interaction.user) {
+      if (user != interaction.user && !idArray.includes(user.id)) {
         idArray.push(user.id);
       }
       if (idArray.length == stackSize) {
