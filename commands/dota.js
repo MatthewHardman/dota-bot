@@ -55,7 +55,6 @@ module.exports = {
         let replyMessage = `It's time to play!`;
         for (let i = 0; i < idArray.length; i++) {
           replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
-          console.log(replyMessage);
         }
         message.reply(replyMessage);
       } else {
