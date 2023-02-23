@@ -37,6 +37,7 @@ module.exports = {
     const collector = message.createReactionCollector({
       filter,
       time: timeOutInMS,
+      dispose: true,
     });
     let idArray = [];
     collector.on("collect", (reaction, user) => {
