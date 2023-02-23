@@ -50,9 +50,9 @@ module.exports = {
     });
 
     collector.on("remove", (reaction, user) => {
-      if (!interaction.user) {
+      if (user != interaction.user) {
         index = idArray.indexOf(user.id);
-        idArray = idArray.splice(index, 1);
+        idArray.splice(index, 1);
       }
     });
 
