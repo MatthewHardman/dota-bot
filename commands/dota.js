@@ -49,9 +49,11 @@ module.exports = {
       }
     });
 
-    collector.on("dispose", (reaction, user) => {
-      index = idArray.indexOf(user.id);
-      idArray = idArray.splice(index, 1);
+    collector.on("remove", (reaction, user) => {
+      if (!interaction.user) {
+        index = idArray.indexOf(user.id);
+        idArray = idArray.splice(index, 1);
+      }
     });
 
     collector.on("end", (collected) => {
