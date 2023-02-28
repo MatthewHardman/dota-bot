@@ -40,5 +40,3 @@ for (const file of eventFiles) {
 }
 
 client.login(token);
-//client.user.setAvatar("./DotaBot.png");
-//client.user.setActivity("Playing Dota");
