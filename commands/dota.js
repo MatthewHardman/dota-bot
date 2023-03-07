@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, Client } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -23,7 +23,7 @@ module.exports = {
     let stackSize = interaction.options.getInteger("stacksize");
     let timeOutInMin = interaction.options.getInteger("timeout");
     let timeOutInMS = timeOutInMin * 60000;
-    const role = client.guild.roles.cache.filter(
+    const role = Client.guild.roles.cache.filter(
       (role) => role.id === "1071259658943217745"
     );
     const message = await interaction.reply({
