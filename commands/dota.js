@@ -23,8 +23,11 @@ module.exports = {
     let stackSize = interaction.options.getInteger("stacksize");
     let timeOutInMin = interaction.options.getInteger("timeout");
     let timeOutInMS = timeOutInMin * 60000;
+    const role = message.guild.roles.cache.filter(
+      (role) => role.id === "1071259658943217745"
+    );
     const message = await interaction.reply({
-      content: ` Hello <@&1071259658943217745> , ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait ${timeOutInMin} minutes! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
+      content: ` Hello ${role} , ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait ${timeOutInMin} minutes! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
       fetchReply: true,
     });
     /*const reactionEmoji = message.guild.emojis.cache.find(
