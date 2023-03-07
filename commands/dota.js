@@ -24,7 +24,7 @@ module.exports = {
     let timeOutInMin = interaction.options.getInteger("timeout");
     let timeOutInMS = timeOutInMin * 60000;
     const role = interaction.guild.roles.cache.filter(
-      (role) => role.id === "071259658943217745"
+      (role) => role.id === "1071259658943217745"
     );
     console.log(role);
     const message = await interaction.reply({
