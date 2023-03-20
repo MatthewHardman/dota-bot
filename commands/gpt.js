@@ -16,12 +16,14 @@ async function getInfo(query) {
     temperature: 0.7,
   });
 
+
   const assistantMessage = completion.data.choices[0].text;
   return assistantMessage;
 }
 
 module.exports = {
   data: new SlashCommandBuilder()
+
     .setName('gpt4')
     .setDescription('Get information using GPT-4 API')
     .addStringOption((option) =>
@@ -35,18 +37,20 @@ module.exports = {
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
       await interaction.reply({
         content: 'You do not have the required role (Bot Dev) to use this command.',
+
         ephemeral: true,
       });
       return;
     }
 
-    const query = interaction.options.getString('query');
+    const query = interaction.options.getString("query");
     const result = await getInfo(query);
 
     if (result) {
       await interaction.reply(result);
     } else {
       await interaction.reply('Sorry, I could not find any information for that query.');
+
     }
   },
 };
