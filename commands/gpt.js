@@ -3,22 +3,27 @@ const { Configuration, OpenAIApi } = require("openai");
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
 const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
 async function getInfo(query) {
   const openai = new OpenAIApi(configuration);
-  const completion = await openai.createCompletion({
-    model: "gpt-4-32k",
-    prompt: query,
+
+  const completion = await openai.createChatCompletion({
+    model: 'gpt-4-32k',
+    messages: [{ role: 'user', content: query }],
+
     max_tokens: 1024,
     n: 1,
     stop: null,
     temperature: 0.7,
   });
 
-  const assistantMessage = completion.data.choices[0].text;
+  const assistantMessage = completion.data.choices[0].message.content;
+
   return assistantMessage;
 }
 
