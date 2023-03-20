@@ -1,15 +1,17 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { Configuration, OpenAIApi } = require('openai');
 
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
 const configuration = new Configuration({
   apiKey: 'your_openai_api_key_here',
 });
 
 async function getInfo(query) {
   const openai = new OpenAIApi(configuration);
-  const completion = await openai.createCompletion({
+  const completion = await openai.createChatCompletion({
     model: 'gpt-4-32k',
-    prompt: query,
+    messages: query,
     max_tokens: 1024,
     n: 1,
     stop: null,
@@ -17,7 +19,7 @@ async function getInfo(query) {
   });
 
 
-  const assistantMessage = completion.data.choices[0].text;
+  const assistantMessage = completion.data.choices[0].message.content;
   return assistantMessage;
 }
 
