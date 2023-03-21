@@ -12,7 +12,10 @@ async function getInfo(query) {
 
   const completion = await openai.createChatCompletion({
     model: 'gpt-4-32k',
-    messages: [{ role: 'user', content: query }],
+    messages: [
+      { role: 'system', content: 'You are an AI chatbot using GPT-4.' },
+      { role: 'user', content: query }
+    ],
 
     max_tokens: 1024,
     n: 1,
@@ -20,7 +23,7 @@ async function getInfo(query) {
     temperature: 0.7,
   });
 
-  const assistantMessage = completion.data.choices[0].message.content;
+  const assistantMessage = completion.data.choices[0].message.content.trim();
 
   return assistantMessage;
 }
