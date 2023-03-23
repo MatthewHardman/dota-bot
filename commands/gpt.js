@@ -11,8 +11,8 @@ async function getInfo(query) {
   const openai = new OpenAIApi(configuration);
 
   const completion = await openai.createChatCompletion({
-    model: 'gpt-4-32k',
-    messages: [{ role: 'user', content: query }],
+    model: "gpt-4",
+    messages: [{ role: "user", content: query }],
 
     max_tokens: 1024,
     n: 1,
