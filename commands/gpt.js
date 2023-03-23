@@ -30,7 +30,8 @@ async function getInfo(query) {
     return assistantMessage;
   } catch (error) {
     console.error(`Error while calling OpenAI API: ${error.message}`);
-    return "An error occurred while processing your request. Please try again later.";
+    const errorPrintout = 'An error occurred while processing your request. Please try again later. /n Error:'+ error.message;
+    return 'An error occurred while processing your request. Please try again later. /n Error: ${error.message}';
   }
 }
 
@@ -61,6 +62,8 @@ module.exports = {
 
     // Defer the reply
   await interaction.deferReply();
+
+  const query = interaction.options.getString("query");
 
   // Call the getInfo function after deferring the reply
   const result = await getInfo(query);
