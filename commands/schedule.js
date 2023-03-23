@@ -23,6 +23,15 @@ module.exports = {
     let stackSize = interaction.options.getInteger("stacksize");
     const timeInput = interaction.options.getString("time");
 
+    // Get the local timezone offset in minutes
+    const timezoneOffset = new Date().getTimezoneOffset();
+    // Convert the offset to hours
+    const timezoneOffsetHours = Math.abs(timezoneOffset) / 60;
+    // Determine the timezone sign
+    const timezoneSign = timezoneOffset > 0 ? "-" : "+";
+    // Format the timezone string
+    const timezoneString = `UTC${timezoneSign}${timezoneOffsetHours}`;
+
     if (!/^\d{4}$/.test(timeInput)) {
       await interaction.reply("Invalid time format. Please provide a 4-digit time in 24-hour format, e.g., 1430 for 14:30.");
       return;
@@ -50,7 +59,7 @@ module.exports = {
     }
 
     const message = await interaction.reply({
-      content: `A Dota game has been scheduled for ${scheduledTime.toLocaleString()} with a stack size of ${stackSize}. React with 👍 if you want to join.`,
+      content: `A Dota game has been scheduled for ${scheduledTime.toLocaleString()} (${timezoneString}) with a stack size of ${stackSize}. React with 👍 if you want to join.`,
       fetchReply: true,
       ephemeral: false,
     });
