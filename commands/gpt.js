@@ -18,6 +18,7 @@ async function getInfo(query) {
         { role: 'user', content: query }
       ],
 
+
       max_tokens: 1024,
       n: 1,
       stop: null,
