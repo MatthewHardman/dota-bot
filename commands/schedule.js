@@ -18,10 +18,21 @@ module.exports = {
         .setDescription("The time you want to schedule the game (24-hour format, e.g., 1430 for 14:30)")
         .setRequired(true)
     ),
+    .addIntegerOption((option) =>
+      option
+        .setName("timezone")
+        .setDescription("Your time zone offset in hours (e.g., +4)")
+        .setRequired(true)
+    ),
 
   async execute(interaction) {
     let stackSize = interaction.options.getInteger("stacksize");
     const timeInput = interaction.options.getString("time");
+
+      const query = interaction.options.getString("query");
+      const timeZoneOffset = interaction.options.getInteger("timezone");
+      const adjustedQuery = adjustScheduledTime(query, timeZoneOffset);
+      const result = await getInfo(adjustedQuery);
 
     // Get the local timezone offset in minutes
     const timezoneOffset = new Date().getTimezoneOffset();
@@ -107,3 +118,39 @@ module.exports = {
     }, scheduledTime - now);
   },
 };
+
+function adjustScheduledTime(query, timeZoneOffset) {
+  const timeRegex = /(\d{1,2}:\d{2}\s?(?:[AP]M)?)/gi;
+  const timeMatches = query.match(timeRegex);
+
+  if (timeMatches) {
+    timeMatches.forEach((time) => {
+      const adjustedTime = adjustTime(time, timeZoneOffset);
+      query = query.replace(time, adjustedTime);
+    });
+  }
+
+  return query;
+}
+
+function adjustTime(time, timeZoneOffset) {
+  const isAMPM = /(?:[AP]M)?/i.test(time);
+  let [hours, minutes] = time.replace(/(?:[AP]M)?/i, "").split(":");
+
+  hours = parseInt(hours, 10) + timeZoneOffset;
+  if (isAMPM) {
+    if (hours < 1) {
+      hours += 12;
+    } else if (hours > 12) {
+      hours -= 12;
+    }
+  } else {
+    if (hours < 0) {
+      hours += 24;
+    } else if (hours > 23) {
+      hours -= 24;
+    }
+  }
+
+  return `${hours}:${minutes}${isAMPM ? (hours >= 12 ? " PM" : " AM") : ""}`;
+}
