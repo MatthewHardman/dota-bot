@@ -58,13 +58,16 @@ module.exports = {
       return;
     }
 
-    const query = interaction.options.getString("query");
-    const result = await getInfo(query);
+      // Defer the reply
+    await interaction.deferReply();
+
+    // Call the getInfo function after deferring the reply
+    const result = await getInfo(adjustedQuery);
 
     if (result) {
-      await interaction.reply(result);
+      await interaction.editReply(result);
     } else {
-      await interaction.reply(
+      await interaction.editReply(
         "Sorry, I could not find any information for that query."
       );
     }
