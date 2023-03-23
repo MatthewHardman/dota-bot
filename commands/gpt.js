@@ -12,12 +12,11 @@ async function getInfo(query) {
 
   try {
     const completion = await openai.Completion.create({
-      model: 'gpt-4',
+      model: "gpt-4",
       messages: [
-        { role: 'system', content: 'You are an AI chatbot using GPT-4.' },
-        { role: 'user', content: query }
+        { role: "system", content: "You are an AI chatbot using GPT-4." },
+        { role: "user", content: query },
       ],
-
 
       max_tokens: 1024,
       n: 1,
@@ -60,17 +59,18 @@ module.exports = {
     }
 
     // Defer the reply
-  await interaction.deferReply();
+    await interaction.deferReply();
 
-  // Call the getInfo function after deferring the reply
-  const result = await getInfo(query);
+    // Call the getInfo function after deferring the reply
+    const query = interaction.options.getString("query");
+    const result = await getInfo(query);
 
-  if (result) {
-    await interaction.editReply(result);
-  } else {
-    await interaction.editReply(
-      "Sorry, I could not find any information for that query."
-    );
-  }
+    if (result) {
+      await interaction.editReply(result);
+    } else {
+      await interaction.editReply(
+        "Sorry, I could not find any information for that query."
+      );
+    }
   },
 };
