@@ -31,19 +31,10 @@ module.exports = {
     let stackSize = interaction.options.getInteger("stacksize");
     const timeInput = interaction.options.getString("time");
 
-      const query = interaction.options.getString("query");
-      const timeZoneOffset = interaction.options.getInteger("timezone");
-      const adjustedQuery = adjustScheduledTime(query, timeZoneOffset);
-      const result = await getInfo(adjustedQuery);
-
-    // Get the local timezone offset in minutes
-    const timezoneOffset = new Date().getTimezoneOffset();
-    // Convert the offset to hours
-    const timezoneOffsetHours = Math.abs(timezoneOffset) / 60;
-    // Determine the timezone sign
-    const timezoneSign = timezoneOffset > 0 ? "-" : "+";
-    // Format the timezone string
-    const timezoneString = `UTC${timezoneSign}${timezoneOffsetHours}`;
+    const query = interaction.options.getString("query");
+    const timeZoneOffset = interaction.options.getInteger("timezone");
+    const adjustedQuery = adjustScheduledTime(query, timeZoneOffset);
+    const result = await getInfo(adjustedQuery);
 
     if (!/^\d{4}$/.test(timeInput)) {
       await interaction.reply(
