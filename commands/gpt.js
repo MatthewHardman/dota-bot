@@ -54,7 +54,8 @@ module.exports = {
     const result = await getInfo(query);
 
     if (result) {
-      await interaction.reply(result);
+      await interaction.deferReply();
+      await interaction.editReply(result);
     } else {
       await interaction.reply(
         "Sorry, I could not find any information for that query."
