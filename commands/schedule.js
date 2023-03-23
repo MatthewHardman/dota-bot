@@ -15,7 +15,9 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("time")
-        .setDescription("The time you want to schedule the game (24-hour format, e.g., 1430 for 14:30)")
+        .setDescription(
+          "The time you want to schedule the game (24-hour format, e.g., 1430 for 14:30)"
+        )
         .setRequired(true)
     ),
     .addIntegerOption((option) =>
@@ -44,7 +46,9 @@ module.exports = {
     const timezoneString = `UTC${timezoneSign}${timezoneOffsetHours}`;
 
     if (!/^\d{4}$/.test(timeInput)) {
-      await interaction.reply("Invalid time format. Please provide a 4-digit time in 24-hour format, e.g., 1430 for 14:30.");
+      await interaction.reply(
+        "Invalid time format. Please provide a 4-digit time in 24-hour format, e.g., 1430 for 14:30."
+      );
       return;
     }
 
@@ -56,16 +60,20 @@ module.exports = {
     scheduledTime.setHours(scheduledHour, scheduledMinute, 0, 0);
 
     if (scheduledTime <= now) {
-      await interaction.reply("The scheduled time has already passed. Please provide a future time.");
+      await interaction.reply(
+        "The scheduled time has already passed. Please provide a future time."
+      );
       return;
     }
 
     const role = interaction.guild.roles.cache.find(
-      (role) => role.name.toLowerCase() === 'dooters'
+      (role) => role.name.toLowerCase() === "dooters"
     );
 
     if (!role) {
-      await interaction.reply("The 'dooters' role does not exist in this server.");
+      await interaction.reply(
+        "The 'dooters' role does not exist in this server."
+      );
       return;
     }
 
@@ -108,16 +116,21 @@ module.exports = {
     tenMinutesBefore.setMinutes(tenMinutesBefore.getMinutes() - 10);
 
     setTimeout(() => {
-      const usersString = idArray.map(userId => `<@${userId}>`).join(' ');
-      interaction.channel.send(`Reminder: The scheduled Dota game will start in 10 minutes. ${usersString}`);
+      const usersString = idArray.map((userId) => `<@${userId}>`).join(" ");
+      interaction.channel.send(
+        `Reminder: The scheduled Dota game will start in 10 minutes. ${usersString}`
+      );
     }, tenMinutesBefore - now);
 
     setTimeout(() => {
-      const usersString = idArray.map(userId => `<@${userId}>`).join(' ');
-      interaction.channel.send(`Reminder: The scheduled Dota game is starting now. ${usersString}`);
+      const usersString = idArray.map((userId) => `<@${userId}>`).join(" ");
+      interaction.channel.send(
+        `Reminder: The scheduled Dota game is starting now. ${usersString}`
+      );
     }, scheduledTime - now);
   },
 };
+
 
 function adjustScheduledTime(query, timeZoneOffset) {
   const timeRegex = /(\d{1,2}:\d{2}\s?(?:[AP]M)?)/gi;
@@ -154,3 +167,4 @@ function adjustTime(time, timeZoneOffset) {
 
   return `${hours}:${minutes}${isAMPM ? (hours >= 12 ? " PM" : " AM") : ""}`;
 }
+
