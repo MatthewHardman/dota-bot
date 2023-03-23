@@ -10,22 +10,27 @@ const configuration = new Configuration({
 async function getInfo(query) {
   const openai = new OpenAIApi(configuration);
 
-  const completion = await openai.createChatCompletion({
-    model: 'gpt-4-32k',
-    messages: [
-      { role: 'system', content: 'You are an AI chatbot using GPT-4.' },
-      { role: 'user', content: query }
-    ],
+  try {
+    const completion = await openai.Completion.create({
+      model: 'gpt-4',
+      messages: [
+        { role: 'system', content: 'You are an AI chatbot using GPT-4.' },
+        { role: 'user', content: query }
+      ],
 
-    max_tokens: 1024,
-    n: 1,
-    stop: null,
-    temperature: 0.7,
-  });
+      max_tokens: 1024,
+      n: 1,
+      stop: null,
+      temperature: 0.7,
+    });
 
-  const assistantMessage = completion.data.choices[0].message.content.trim();
+    const assistantMessage = completion.data.choices[0].message.content.trim();
 
-  return assistantMessage;
+    return assistantMessage;
+  } catch (error) {
+    console.error(`Error while calling OpenAI API: ${error.message}`);
+    return "An error occurred while processing your request. Please try again later.";
+  }
 }
 
 module.exports = {
