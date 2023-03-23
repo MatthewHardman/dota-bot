@@ -19,7 +19,7 @@ module.exports = {
           "The time you want to schedule the game (24-hour format, e.g., 1430 for 14:30)"
         )
         .setRequired(true)
-    ),
+    )
     .addIntegerOption((option) =>
       option
         .setName("timezone")
