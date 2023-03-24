@@ -14,7 +14,11 @@ async function getInfo(query) {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "You are an AI chatbot using GPT-4." },
+        {
+          role: "system",
+          content:
+            "You are an AI chatbot using GPT-4. You should only answer questions about Dota 2 the video game.",
+        },
         { role: "user", content: query },
       ],
       max_tokens: 1024,
@@ -33,9 +37,9 @@ async function getInfo(query) {
 }
 
 async function isAboutDota(query) {
-  const aboutDotaQuery = `Is this question about Dota? (Only answer with a single word, yes or no.) "${query}"`;
+  const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
   const response = await getInfo(aboutDotaQuery);
-  console.log(response);
+  console.log(query + ": " + response);
   // Check if the response from GPT-4 indicates that the question is about Dota
   return response.toLowerCase().includes("yes");
 }
