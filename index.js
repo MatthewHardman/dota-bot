@@ -45,6 +45,7 @@ client.on("messageCreate", async (message) => {
   
   // Check if the message is a reply and mentions the bot
   if (message.reference && message.mentions.has(client.user)) {
+    console.log("Funny test commencing...");
     // Get the replied message
     const repliedMessage = await message.channel.messages.fetch(message.reference.messageId);
     
