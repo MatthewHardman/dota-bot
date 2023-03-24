@@ -90,7 +90,9 @@ module.exports = {
     const result = await getInfo(query, gpt3);
 
     if (result) {
-      await interaction.editReply(result);
+      await interaction.editReply(
+        interaction.user.username + " asked " + query + "\n" + result
+      );
     } else {
       await interaction.editReply(
         "Sorry, I could not find any information for that query."
