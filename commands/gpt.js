@@ -30,8 +30,7 @@ async function getInfo(query) {
     return assistantMessage;
   } catch (error) {
     console.error(`Error while calling OpenAI API: ${error.message}`);
-    const errorPrintout = 'An error occurred while processing your request. Please try again later. /n Error:'+ error.message;
-    return 'An error occurred while processing your request. Please try again later. /n Error: ${error.message}';
+    return `An error occurred while processing your request. Please try again later. \nError: ${error.message}`;
   }
 }
 
