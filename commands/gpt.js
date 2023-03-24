@@ -8,11 +8,12 @@ const configuration = new Configuration({
 });
 
 async function getInfo(query) {
+  console.log("getInfo function: " + query);
   const openai = new OpenAIApi(configuration);
 
   try {
     const completion = await openai.ChatCompletion.create({
-      model: 'gpt-3.5-turbo',
+      model: "gpt-3.5-turbo",
 
       messages: [
         { role: "system", content: "You are an AI chatbot using GPT-4." },
@@ -62,11 +63,11 @@ module.exports = {
     // Defer the reply
     await interaction.deferReply();
 
-  const query = interaction.options.getString("query");
+    const query = interaction.options.getString("query");
+    console.log("interaction query: " + query);
 
-  // Call the getInfo function after deferring the reply
-  const result = await getInfo(query);
-
+    // Call the getInfo function after deferring the reply
+    const result = await getInfo(query);
 
     if (result) {
       await interaction.editReply(result);
