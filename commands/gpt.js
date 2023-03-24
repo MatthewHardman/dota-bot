@@ -11,6 +11,8 @@ const gpt4 = "gpt-4";
 const gpt3 = "gpt-3.5-turbo";
 let responseArray = [];
 const requiredRole = "Regulars";
+const logChannel = guild.channels.cache.find((channel) => channel.name === "bot-logs");
+const loggedTokenUse = 0;
 
 async function getInfo(query, modelSelection) {
   const openai = new OpenAIApi(configuration);
@@ -34,6 +36,8 @@ async function getInfo(query, modelSelection) {
     });
 
     const assistantMessage = completion.data.choices[0].message.content.trim();
+    const tokensUsed = completion.data.usage.total_tokens;
+    loggedTokenUse = loggedTokenUse + tokensUsed;
 
     responseArray.push({ role: "user", content: query });
     responseArray.push({ role: "assistant", content: assistantMessage });
@@ -41,7 +45,10 @@ async function getInfo(query, modelSelection) {
       responseArray.shift();
       responseArray.shift();
     }
-    console.log("total tokens used: " + completion.data.usage.total_tokens);
+    console.log("Tokens for this query: " + tokensUsed);
+    console.log("Total tokens used since last reboot: " + loggedTokenUse)
+
+    logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
 
     return assistantMessage;
   } catch (error) {
