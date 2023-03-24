@@ -17,7 +17,7 @@ async function getInfo(query) {
 
       messages: [
         { role: "system", content: "You are an AI chatbot using GPT-4." },
-        { role: "user", content: query },
+        { role: "user", content: "hello" },
       ],
 
       max_tokens: 1024,
