@@ -85,7 +85,7 @@ module.exports = {
     const query = interaction.options.getString("query");
 
     // Defer the reply
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     const isDotaRelated = await isAboutDota(query);
 
@@ -101,9 +101,11 @@ module.exports = {
     const result = await getInfo(query, gpt3);
 
     if (result) {
-      await interaction.editReply(
-        interaction.user.username + " asked: **" + query + "** \n" + result
-      );
+      await interaction.editReply({
+        content:
+          interaction.user.username + " asked: **" + query + "** \n" + result,
+        ephemeral: false,
+      });
     } else {
       await interaction.editReply(
         "Sorry, I could not find any information for that query."
