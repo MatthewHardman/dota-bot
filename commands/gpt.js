@@ -22,7 +22,7 @@ async function getInfo(query, modelSelection) {
         {
           role: "system",
           content:
-            "You are an AI chatbot using GPT-4. You should only answer questions about Dota 2 the video game.",
+            "You are an AI chatbot using GPT-4. Try to stay polite, but you are otherwise a normal (AI) member of the Whiskey Business (WSKB) Discord server!",
         },
         ...responseArray,
         { role: "user", content: query },
