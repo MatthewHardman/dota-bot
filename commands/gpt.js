@@ -7,12 +7,15 @@ const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
-async function getInfo(query) {
+const gpt4 = "gpt-4";
+const gpt3 = "gpt-3.5-turbo";
+
+async function getInfo(query, modelSelection) {
   const openai = new OpenAIApi(configuration);
 
   try {
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: modelSelection,
       messages: [
         {
           role: "system",
@@ -38,7 +41,7 @@ async function getInfo(query) {
 
 async function isAboutDota(query) {
   const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
-  const response = await getInfo(aboutDotaQuery);
+  const response = await getInfo(aboutDotaQuery, gpt3);
   console.log(query + ": " + response);
   // Check if the response from GPT-4 indicates that the question is about Dota
   return response.toLowerCase().includes("yes");
@@ -84,7 +87,7 @@ module.exports = {
     }
 
     // Call the getInfo function after deferring the reply
-    const result = await getInfo(query);
+    const result = await getInfo(query, gpt3);
 
     if (result) {
       await interaction.editReply(result);
