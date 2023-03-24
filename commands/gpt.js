@@ -30,8 +30,7 @@ async function getInfo(query) {
     return assistantMessage;
   } catch (error) {
     console.error(`Error while calling OpenAI API: ${error.message}`);
-    const errorPrintout = 'An error occurred while processing your request. Please try again later. /n Error:'+ error.message;
-    return 'An error occurred while processing your request. Please try again later. /n Error: ${error.message}';
+    return `An error occurred while processing your request. Please try again later. \nError: ${error.message}`;
   }
 }
 
@@ -44,6 +43,40 @@ module.exports = {
       option
         .setName("query")
         .setDescription("The query you want to ask GPT-4 API")
+        .setRequired(true)
+    ),
+  async execute(interaction) {
+    const botDevRole = interaction.guild.roles.cache.find(
+      (role) => role.name === "Bot Dev"
+    );
+    if (!interaction.member.roles.cache.has(botDevRole.id)) {
+      await interaction.reply({
+        content:
+          "You do not have the required role (Bot Dev) to use this command.",
+
+        ephemeral: true,
+      });
+      return;
+    }
+
+    // Defer the reply
+  await interaction.deferReply();
+
+  const query = interaction.options.getString("query");
+
+  // Call the getInfo function after deferring the reply
+  const result = await getInfo(query);
+
+  if (result) {
+    await interaction.editReply(result);
+  } else {
+    await interaction.editReply(
+      "Sorry, I could not find any information for that query."
+    );
+  }
+  },
+};
+
         .setRequired(true)
     ),
   async execute(interaction) {
