@@ -35,7 +35,7 @@ async function getInfo(query) {
 async function isAboutDota(query) {
   const aboutDotaQuery = `Is this question about Dota? (Only answer with a single word, yes or no.) "${query}"`;
   const response = await getInfo(aboutDotaQuery);
-
+  console.log(response);
   // Check if the response from GPT-4 indicates that the question is about Dota
   return response.toLowerCase().includes("yes");
 }
