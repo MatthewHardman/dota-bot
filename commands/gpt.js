@@ -11,8 +11,9 @@ async function getInfo(query) {
   const openai = new OpenAIApi(configuration);
 
   try {
-    const completion = await openai.Completion.create({
-      model: "gpt-4",
+    const completion = await openai.ChatCompletion.create({
+      model: 'gpt-4',
+
       messages: [
         { role: "system", content: "You are an AI chatbot using GPT-4." },
         { role: "user", content: query },
@@ -29,7 +30,7 @@ async function getInfo(query) {
     return assistantMessage;
   } catch (error) {
     console.error(`Error while calling OpenAI API: ${error.message}`);
-    return "An error occurred while processing your request. Please try again later.";
+    return `An error occurred while processing your request. Please try again later. \nError: ${error.message}`;
   }
 }
 
@@ -61,9 +62,11 @@ module.exports = {
     // Defer the reply
     await interaction.deferReply();
 
-    // Call the getInfo function after deferring the reply
-    const query = interaction.options.getString("query");
-    const result = await getInfo(query);
+  const query = interaction.options.getString("query");
+
+  // Call the getInfo function after deferring the reply
+  const result = await getInfo(query);
+
 
     if (result) {
       await interaction.editReply(result);
