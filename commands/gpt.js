@@ -90,9 +90,10 @@ module.exports = {
     const isDotaRelated = await isAboutDota(query);
 
     if (!isDotaRelated) {
-      await interaction.editReply(
-        "This command only accepts questions about Dota."
-      );
+      await interaction.editReply({
+        content: "This command only accepts questions about Dota.",
+        ephemeral: true,
+      });
       return;
     }
 
