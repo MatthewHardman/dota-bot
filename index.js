@@ -59,7 +59,7 @@ client.on("messageCreate", async (message) => {
 
 async function isFunnyJoke(message) {
   const query = `Is this joke funny? "${message}"`;
-  const response = await getInfo(query);
+  const response = await getInfo(query, 'gpt-3.5-turbo');
 
   // Check if the response from GPT-4 indicates that the joke is funny
   if (response.toLowerCase().includes("yes")) {

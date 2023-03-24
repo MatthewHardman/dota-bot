@@ -73,6 +73,9 @@ async function logTokenUsage(guild) {
     } else {
       console.warn("Couldn't find the #bot-logs channel.");
     }
+
+    return usage;
+  
   } catch (error) {
     console.error(`Error retrieving token usage: ${error.message}`);
   }
@@ -125,11 +128,11 @@ module.exports = {
     const result = await getInfo(query, gpt3);
 
     // Log token usage after processing the command
-    await logTokenUsage(interaction.guild);
+    const usage = await logTokenUsage(interaction.guild);
 
     if (result) {
       await interaction.editReply(
-        interaction.user.username + " asked: **" + query + "** \n" + result
+        interaction.user.username + " asked: **" + query + "** \n" + result + "\nTokens used: " + usage + "."
       );
     } else {
       await interaction.editReply(
