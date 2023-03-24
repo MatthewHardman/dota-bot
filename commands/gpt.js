@@ -10,6 +10,7 @@ const configuration = new Configuration({
 const gpt4 = "gpt-4";
 const gpt3 = "gpt-3.5-turbo";
 let responseArray = [];
+const requiredRole = "Regulars";
 
 async function getInfo(query, modelSelection) {
   const openai = new OpenAIApi(configuration);
@@ -50,11 +51,13 @@ async function getInfo(query, modelSelection) {
 }
 
 async function isAboutDota(query) {
-  const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
-  const response = await getInfo(aboutDotaQuery, gpt3);
-  console.log(query + ": " + response);
-  // Check if the response from GPT-4 indicates that the question is about Dota
-  return response.toLowerCase().includes("yes");
+  // commented out while we decide what to do about the overly-aggressive gating 
+  // const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
+  // const response = await getInfo(aboutDotaQuery, gpt3);
+  // console.log(query + ": " + response);
+  // // Check if the response from GPT-4 indicates that the question is about Dota
+  // return response.toLowerCase().includes("yes");
+  return true
 }
 
 module.exports = {
@@ -70,8 +73,10 @@ module.exports = {
     ),
   async execute(interaction) {
     const botDevRole = interaction.guild.roles.cache.find(
-      (role) => role.name === "Bot Dev"
+      (role) => role.name === requiredRole
     );
+
+    //Only regulars can access this bot
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
       await interaction.reply({
         content:
