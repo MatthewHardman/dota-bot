@@ -11,7 +11,7 @@ async function getInfo(query) {
   const openai = new OpenAIApi(configuration);
 
   try {
-    const completion = await openai.Completion.create({
+    const completion = await openai.ChatCompletion.create({
       model: 'gpt-4',
       messages: [
         { role: 'system', content: 'You are an AI chatbot using GPT-4.' },
