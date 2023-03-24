@@ -40,7 +40,7 @@ async function getInfo(query, modelSelection) {
       responseArray.shift();
       responseArray.shift();
     }
-    console.log("total tokens used: " + response.usage.total_tokens);
+    console.log("total tokens used: " + completion.data.usage.total_tokens);
 
     return assistantMessage;
   } catch (error) {
