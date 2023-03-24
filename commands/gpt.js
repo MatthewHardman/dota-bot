@@ -10,6 +10,7 @@ const configuration = new Configuration({
 const gpt4 = "gpt-4";
 const gpt3 = "gpt-3.5-turbo";
 let responseArray = [];
+const requiredRole = "Regulars";
 
 async function getInfo(query, modelSelection) {
   const openai = new OpenAIApi(configuration);
@@ -72,8 +73,10 @@ module.exports = {
     ),
   async execute(interaction) {
     const botDevRole = interaction.guild.roles.cache.find(
-      (role) => role.name === "Bot Dev"
+      (role) => role.name === requiredRole
     );
+
+    //Only regulars can access this bot
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
       await interaction.reply({
         content:
