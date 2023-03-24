@@ -84,6 +84,7 @@ module.exports = {
     );
 
     //Only regulars can access this bot
+    //adding a comment to force a deployment
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
       await interaction.reply({
         content:
