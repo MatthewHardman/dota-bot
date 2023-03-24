@@ -91,7 +91,7 @@ module.exports = {
 
     if (result) {
       await interaction.editReply(
-        interaction.user.username + " asked " + query + "\n" + result
+        interaction.user.username + " asked: " + query + "\n" + result
       );
     } else {
       await interaction.editReply(
