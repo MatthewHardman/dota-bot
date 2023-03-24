@@ -51,12 +51,12 @@ async function getInfo(query, modelSelection) {
 
 async function isAboutDota(query) {
   // commented out while we decide what to do about the overly-aggressive gating 
-  // const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
-  // const response = await getInfo(aboutDotaQuery, gpt3);
-  // console.log(query + ": " + response);
-  // // Check if the response from GPT-4 indicates that the question is about Dota
-  // return response.toLowerCase().includes("yes");
-  return true
+  const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
+  const response = await getInfo(aboutDotaQuery, gpt3);
+  console.log(query + ": " + response);
+  // Check if the response from GPT-4 indicates that the question is about Dota
+  return response.toLowerCase().includes("yes");
+  // return true
 }
 
 module.exports = {
