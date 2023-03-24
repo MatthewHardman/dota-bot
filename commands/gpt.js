@@ -12,7 +12,7 @@ async function getInfo(query) {
 
   try {
     const completion = await openai.ChatCompletion.create({
-      model: 'gpt-4',
+      model: 'gpt-3.5-turbo',
 
       messages: [
         { role: "system", content: "You are an AI chatbot using GPT-4." },
