@@ -8,7 +8,6 @@ const configuration = new Configuration({
 });
 
 async function getInfo(query) {
-  console.log("getInfo function: " + query);
   const openai = new OpenAIApi(configuration);
 
   try {
@@ -65,20 +64,20 @@ module.exports = {
       });
       return;
     }
+
+    const query = interaction.options.getString("query");
+
     // Defer the reply
     await interaction.deferReply();
 
-    const query = interaction.options.getString("query");
     const isDotaRelated = await isAboutDota(query);
 
     if (!isDotaRelated) {
-      await interaction.reply(
+      await interaction.editReply(
         "This command only accepts questions about Dota."
       );
       return;
     }
-
-    console.log("interaction query: " + query);
 
     // Call the getInfo function after deferring the reply
     const result = await getInfo(query);
