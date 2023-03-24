@@ -76,37 +76,3 @@ module.exports = {
   }
   },
 };
-
-        .setRequired(true)
-    ),
-  async execute(interaction) {
-    const botDevRole = interaction.guild.roles.cache.find(
-      (role) => role.name === "Bot Dev"
-    );
-    if (!interaction.member.roles.cache.has(botDevRole.id)) {
-      await interaction.reply({
-        content:
-          "You do not have the required role (Bot Dev) to use this command.",
-
-        ephemeral: true,
-      });
-      return;
-    }
-
-    // Defer the reply
-  await interaction.deferReply();
-
-  const query = interaction.options.getString("query");
-
-  // Call the getInfo function after deferring the reply
-  const result = await getInfo(query);
-
-  if (result) {
-    await interaction.editReply(result);
-  } else {
-    await interaction.editReply(
-      "Sorry, I could not find any information for that query."
-    );
-  }
-  },
-};
