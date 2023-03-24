@@ -80,7 +80,7 @@ module.exports = {
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
       await interaction.reply({
         content:
-          "You do not have the required role (Bot Dev) to use this command.",
+          "You do not have the required role "+ requiredRole + " to use this command.",
 
         ephemeral: true,
       });
