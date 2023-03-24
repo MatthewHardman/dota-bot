@@ -33,6 +33,14 @@ async function getInfo(query) {
   }
 }
 
+async function isAboutDota(query) {
+  const aboutDotaQuery = `Is this question about Dota? (Only answer with a single word, yes or no.) "${query}"`;
+  const response = await getInfo(aboutDotaQuery);
+
+  // Check if the response from GPT-4 indicates that the question is about Dota
+  return response.toLowerCase().includes("yes");
+}
+
 module.exports = {
   data: new SlashCommandBuilder()
 
@@ -57,11 +65,19 @@ module.exports = {
       });
       return;
     }
-
     // Defer the reply
     await interaction.deferReply();
 
     const query = interaction.options.getString("query");
+    const isDotaRelated = await isAboutDota(query);
+
+    if (!isDotaRelated) {
+      await interaction.reply(
+        "This command only accepts questions about Dota."
+      );
+      return;
+    }
+
     console.log("interaction query: " + query);
 
     // Call the getInfo function after deferring the reply
