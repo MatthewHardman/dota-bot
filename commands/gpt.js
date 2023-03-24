@@ -60,6 +60,24 @@ async function isAboutDota(query) {
   return true
 }
 
+async function logTokenUsage(guild) {
+  try {
+    const openai = new OpenAIApi(configuration);
+    const usage = await openai.Usage.get();
+
+    const totalTokens = usage.data.total_tokens;
+    const logChannel = guild.channels.cache.find((channel) => channel.name === "bot-logs");
+
+    if (logChannel) {
+      logChannel.send(`Current token usage: ${totalTokens} tokens.`);
+    } else {
+      console.warn("Couldn't find the #bot-logs channel.");
+    }
+  } catch (error) {
+    console.error(`Error retrieving token usage: ${error.message}`);
+  }
+}
+
 module.exports = {
   data: new SlashCommandBuilder()
 
@@ -105,6 +123,9 @@ module.exports = {
 
     // Call the getInfo function after deferring the reply
     const result = await getInfo(query, gpt3);
+
+    // Log token usage after processing the command
+    await logTokenUsage(interaction.guild);
 
     if (result) {
       await interaction.editReply(
