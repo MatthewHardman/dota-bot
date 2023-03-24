@@ -9,6 +9,7 @@ const configuration = new Configuration({
 
 const gpt4 = "gpt-4";
 const gpt3 = "gpt-3.5-turbo";
+let responseArray = [];
 
 async function getInfo(query, modelSelection) {
   const openai = new OpenAIApi(configuration);
@@ -22,15 +23,24 @@ async function getInfo(query, modelSelection) {
           content:
             "You are an AI chatbot using GPT-4. You should only answer questions about Dota 2 the video game.",
         },
+        ...responseArray,
         { role: "user", content: query },
       ],
-      max_tokens: 1024,
+      max_tokens: 2048,
       n: 1,
       stop: null,
       temperature: 0.7,
     });
 
     const assistantMessage = completion.data.choices[0].message.content.trim();
+
+    responseArray.push({ role: "user", content: query });
+    responseArray.push({ role: "assistant", content: assistantMessage });
+    if (responseArray.length > 10) {
+      responseArray.shift();
+      responseArray.shift();
+    }
+    console.log("total tokens used: " + response.usage.total_tokens);
 
     return assistantMessage;
   } catch (error) {
