@@ -12,14 +12,12 @@ async function getInfo(query) {
   const openai = new OpenAIApi(configuration);
 
   try {
-    const completion = await openai.ChatCompletion.create({
+    const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-
       messages: [
         { role: "system", content: "You are an AI chatbot using GPT-4." },
-        { role: "user", content: "hello" },
+        { role: "user", content: query },
       ],
-
       max_tokens: 1024,
       n: 1,
       stop: null,
