@@ -85,8 +85,7 @@ module.exports = {
     );
 
     logChannel = interaction.guild.channels.cache.find((channel) => channel.name === "bot-logs");
-    logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
-    console.log("Bot Lot Channel: " + logChannel);
+    // console.log("Bot Log Channel: " + logChannel);
     //Only regulars can access this bot
     //changing a comment to force a deployment
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
@@ -120,6 +119,7 @@ module.exports = {
 
     // Log token usage after processing the command
     // const usage = 0;
+    logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
 
     if (result) {
       await interaction.editReply(
