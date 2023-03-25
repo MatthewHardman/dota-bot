@@ -11,7 +11,7 @@ const gpt4 = "gpt-4";
 const gpt3 = "gpt-3.5-turbo";
 let responseArray = [];
 const requiredRole = "Regulars";
-const logChannel = guild.channels.cache.find((channel) => channel.name === "bot-logs");
+//const logChannel = guild.channels.cache.find((channel) => channel.name === "bot-logs");
 const loggedTokenUse = 0;
 
 async function getInfo(query, modelSelection) {
@@ -48,7 +48,7 @@ async function getInfo(query, modelSelection) {
     console.log("Tokens for this query: " + tokensUsed);
     console.log("Total tokens used since last reboot: " + loggedTokenUse)
 
-    logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
+    //logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
 
     return assistantMessage;
   } catch (error) {
