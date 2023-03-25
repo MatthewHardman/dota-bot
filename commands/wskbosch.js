@@ -38,7 +38,7 @@ module.exports = {
 
     try {
       const imageUrl = await getImage(prompt);
-      await interaction.editReply({ content: "Prompt: " + prompt + "\n" + imageUrl });
+      await interaction.editReply({ content: "Prompt: " + prompt + "\n", embed: imageUrl});
     } catch (error) {
       console.error(`Error while calling OpenAI Images API: ${error.message}`);
       await interaction.editReply(
