@@ -115,7 +115,7 @@ module.exports = {
     const result = await getInfo(query, gpt3);
 
     // Log token usage after processing the command
-    const usage;
+    // const usage = 0;
 
     if (result) {
       await interaction.editReply(
