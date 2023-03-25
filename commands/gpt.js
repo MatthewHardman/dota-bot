@@ -84,7 +84,7 @@ module.exports = {
       (role) => role.name === requiredRole
     );
 
-    logChannel = guild.channels.cache.find((channel) => channel.name === "bot-logs");
+    logChannel = interacton.guild.channels.cache.find((channel) => channel.name === "bot-logs");
     console.log("Bot Lot Channel: " + logChannel);
     //Only regulars can access this bot
     //changing a comment to force a deployment
