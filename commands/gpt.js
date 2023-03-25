@@ -49,7 +49,7 @@ async function getInfo(query, modelSelection) {
     console.log("Tokens for this query: " + tokensUsed);
     console.log("Total tokens used since last reboot: " + loggedTokenUse)
 
-    //logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
+    
 
     return assistantMessage;
   } catch (error) {
@@ -85,6 +85,7 @@ module.exports = {
     );
 
     logChannel = interaction.guild.channels.cache.find((channel) => channel.name === "bot-logs");
+    logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
     console.log("Bot Lot Channel: " + logChannel);
     //Only regulars can access this bot
     //changing a comment to force a deployment
