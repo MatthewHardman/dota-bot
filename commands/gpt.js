@@ -11,7 +11,8 @@ const gpt4 = "gpt-4";
 const gpt3 = "gpt-3.5-turbo";
 let responseArray = [];
 const requiredRole = "Regulars";
-//const logChannel = guild.channels.cache.find((channel) => channel.name === "bot-logs");
+var logChannel = "";
+
 var loggedTokenUse = 0;
 
 async function getInfo(query, modelSelection) {
@@ -83,6 +84,8 @@ module.exports = {
       (role) => role.name === requiredRole
     );
 
+    logChannel = guild.channels.cache.find((channel) => channel.name === "bot-logs");
+    console.log("Bot Lot Channel: " + logChannel);
     //Only regulars can access this bot
     //changing a comment to force a deployment
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
