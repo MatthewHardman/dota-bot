@@ -12,7 +12,7 @@ const gpt3 = "gpt-3.5-turbo";
 let responseArray = [];
 const requiredRole = "Regulars";
 //const logChannel = guild.channels.cache.find((channel) => channel.name === "bot-logs");
-const loggedTokenUse = 0;
+var loggedTokenUse = 0;
 
 async function getInfo(query, modelSelection) {
   const openai = new OpenAIApi(configuration);
