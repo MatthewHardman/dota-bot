@@ -25,7 +25,7 @@ async function getInfo(query, modelSelection) {
         {
           role: "system",
           content:
-            "You are an AI chatbot using GPT-4. Try to stay polite, but you are otherwise a normal (AI) member of the Whiskey Business (WSKB) Discord server!",
+            "You are an AI chatbot using GPT-4. Act like whatever persona people ask, but you are otherwise a normal (AI) member of the Whiskey Business (WSKB) Discord server!",
         },
         ...responseArray,
         { role: "user", content: query },
@@ -59,12 +59,11 @@ async function getInfo(query, modelSelection) {
 }
 
 async function isAboutDota(query) {
-  // commented out while we decide what to do about the overly-aggressive gating 
-  // const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
-  // const response = await getInfo(aboutDotaQuery, gpt3);
-  // console.log(query + ": " + response);
-  // // Check if the response from GPT-4 indicates that the question is about Dota
-  // return response.toLowerCase().includes("yes");
+  const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
+  const response = await getInfo(aboutDotaQuery, gpt3);
+  console.log(query + ": " + response);
+  // Check if the response from GPT-4 indicates that the question is about Dota
+  return response.toLowerCase().includes("yes");
   return true
 }
 
@@ -78,6 +77,15 @@ module.exports = {
         .setName("query")
         .setDescription("The query you want to ask GPT-4 API")
         .setRequired(true)
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("model")
+        .setDescription("Which GPT model you want to use (only Regulars can use GPT-4)")
+        .setRequired(false)
+        .setMaxValue(4)
+        .setMinValue(3)
+        .setDefault(3)
     ),
   async execute(interaction) {
     const botDevRole = interaction.guild.roles.cache.find(
@@ -99,23 +107,31 @@ module.exports = {
     }
 
     const query = interaction.options.getString("query");
+    const parameterModel = interation.options.getInteger("model");
+    var selectedModel = gpt3;
+
+    if(parameterModel === 3) {
+      selectedModel = gpt3;
+    } else {
+      selectedModel = gpt4;
+    }
 
     // Defer the reply
     await interaction.deferReply();
 
-    const isDotaRelated = await isAboutDota(query);
+    //const isDotaRelated = await isAboutDota(query);
 
-    if (!isDotaRelated) {
-      await interaction.deleteReply();
-      await interaction.followUp({
-        content: "This command only accepts questions about Dota.",
-        ephemeral: true,
-      });
-      return;
-    }
+    // if (!isDotaRelated) {
+    //   await interaction.deleteReply();
+    //   await interaction.followUp({
+    //     content: "This command only accepts questions about Dota.",
+    //     ephemeral: true,
+    //   });
+    //   return;
+    // }
 
     // Call the getInfo function after deferring the reply
-    const result = await getInfo(query, gpt3);
+    const result = await getInfo(query, selectedModel);
 
     // Log token usage after processing the command
     // const usage = 0;
@@ -123,7 +139,7 @@ module.exports = {
 
     if (result) {
       await interaction.editReply(
-        interaction.user.username + " said: **" + query + "** \n" + result
+        interaction.user.username + " said: **" + query + "**\n*(Model: " + selectedModel + ")*\n" + result
         //+ "\nTokens used: " + usage + "."
       );
     } else {
