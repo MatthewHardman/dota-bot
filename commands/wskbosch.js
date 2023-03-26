@@ -45,16 +45,16 @@ module.exports = {
       await interaction.editReply({ embeds: [{
         color: 3447003,
         author: {
-          name: "Author Name, it can hold 256 characters",
-          icon_url: "https://i.imgur.com/lm8s41J.png"
+          name: interaction.user.displayName,
+          icon_url: interaction.user.avatar
         },
         thumbnail: {
           url: "http://i.imgur.com/p2qNFag.png"
         },
         image: {
-          url: "http://i.imgur.com/yVpymuV.png"
+          url: imageUrl
         },
-        title: "This is your title, it can hold 256 characters",
+        title: prompt,
         url: "https://discord.js.org/#/docs/main/master/class/MessageEmbed",
         description: "This is the main body of text, it can hold 2048 characters.",
         fields: [{
