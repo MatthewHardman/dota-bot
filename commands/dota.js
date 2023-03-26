@@ -75,12 +75,11 @@ module.exports = {
         }
         message.reply(replyMessage);
 
-        console.log(interaction)
+        // console.log(interaction)
 
-        // await interaction.editReply(
-        //   // interaction.user.username + " said: **" + query + "**\n*(Model: " + selectedModel + ")*\n" + result
-        //   // //+ "\nTokens used: " + usage + "."
-        // );
+        await interaction.editReply({
+          content: `This request has been completed.`
+        });
       } else {
         message.reply("Not enough for a stack right now. Try again later!");
       }
