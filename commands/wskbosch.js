@@ -57,10 +57,15 @@ module.exports = {
         title: prompt,
         url: imageUrl,
         description: "Generative art created by the WSKBosch bot and " + interaction.user.displayName,
+        fields: [{
+          name: "This is a single field title, it can hold 256 characters",
+          value: "This is a field value, it can hold 1024 characters.",
+          inline: false
+        }],
         timestamp: new Date(),
         footer: {
           icon_url: "./DotaBot.png",
-          text: "Thanks for playing!"
+          text: "This is the footer text, it can hold 2048 characters"
         }
       }]});
     } catch (error) {
