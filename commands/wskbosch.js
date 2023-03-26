@@ -50,9 +50,9 @@ module.exports = {
           icon_url: "https://www.google.com"
           //"https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpg"
         },
-        // thumbnail: {
-        //   url: "http://i.imgur.com/p2qNFag.png"
-        // },
+        thumbnail: {
+          url: "http://i.imgur.com/p2qNFag.png"
+        },
         image: {
           url: imageUrl
         },
@@ -71,7 +71,7 @@ module.exports = {
       }]});
     } catch (error) {
       console.log("Image Prompt: " + prompt);
-      console.log("Author: " + interaction.member.user.displayName);
+      console.log(interaction.member.user.displayName);
       console.error(`Error while calling OpenAI Images API: ${error.message}`);
       await interaction.editReply(
         "An error occurred while processing your request. Please try again later."
