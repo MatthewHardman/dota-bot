@@ -46,7 +46,8 @@ module.exports = {
         color: 3447003,
         author: {
           name: interaction.user.displayName,
-          icon_url: "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpg"
+          icon_url: "https://www.google.com"
+          //"https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpg"
         },
         thumbnail: {
           url: "http://i.imgur.com/p2qNFag.png"
@@ -55,7 +56,6 @@ module.exports = {
           url: imageUrl
         },
         title: prompt,
-        url: imageUrl,
         description: "Generative art created by the WSKBosch bot and " + interaction.user.displayName,
         fields: [{
           name: "This is a single field title, it can hold 256 characters",
