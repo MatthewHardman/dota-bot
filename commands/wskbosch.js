@@ -35,7 +35,7 @@ module.exports = {
     ),
   async execute(interaction) {
     const prompt = interaction.options.getString("prompt");
-    console.log(interaction.member);
+    //console.log(interaction.member);
 
     // Defer the reply
     await interaction.deferReply();
@@ -54,7 +54,7 @@ module.exports = {
           url: imageUrl
         },
         title: prompt,
-        description: "Generative art created by the WSKBosch bot and " + interaction.member.user.displayName,
+        description: "Generative art created by the WSKBosch bot and " + interaction.member.nickname,
         // fields: [{
         //   name: "This is a single field title, it can hold 256 characters",
         //   value: "This is a field value, it can hold 1024 characters.",
