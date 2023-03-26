@@ -7,6 +7,8 @@ const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
+const requiredRole = "Regulars"
+
 async function getImage(prompt) {
   const openai = new OpenAIApi(configuration);
 
@@ -36,6 +38,16 @@ module.exports = {
   async execute(interaction) {
     const prompt = interaction.options.getString("prompt");
     //console.log(interaction.member);
+
+    if (!interaction.member.roles.cache.has(botDevRole.id)) {
+      await interaction.reply({
+        content:
+          "You do not have the required role "+ requiredRole + " to use this command.",
+
+        ephemeral: true,
+      });
+      return;
+    }
 
     // Defer the reply
     await interaction.deferReply();
