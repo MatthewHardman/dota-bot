@@ -33,7 +33,7 @@ module.exports = {
     const formattedEndTime = `<t:${endTime}:R>`;
 
     const message = await interaction.reply({
-      content: `Hello <@&${role.id}>, ${interaction.user.username} would like to play with a stack size of ${stackSize} ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ` + interaction.user.username + `, I have reacted for you.`,
+      content: `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms.\n*(` + interaction.user.username + `, I have reacted for you.)*`,
       fetchReply: true,
     });
     /*const reactionEmoji = message.guild.emojis.cache.find(
@@ -75,11 +75,10 @@ module.exports = {
         }
         message.reply(replyMessage);
 
-        // console.log(interaction)
-
-        message.edit(`This request has been completed.`);
+        message.edit(`*The stack of ${stackSize} requested by ${interaction.user.username} formed ${formattedEndTime}.*`);
       } else {
         message.reply("Not enough for a stack right now. Try again later!");
+         message.edit(`*The stack didn't form in time for ${interaction.user.username}.*`);
       }
     });
   },
