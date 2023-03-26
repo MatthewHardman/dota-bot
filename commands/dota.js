@@ -33,7 +33,7 @@ module.exports = {
     const formattedEndTime = `<t:${endTime}:R>`;
 
     const message = await interaction.reply({
-      content: ` Hello <@&${role.id}>, ${interaction.user.username} would like to play with a stack size of ${stackSize} ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ` + interaction.user.username + `, I have reacted for you.`,
+      content: `Hello <@&${role.id}>, ${interaction.user.username} would like to play with a stack size of ${stackSize} ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ` + interaction.user.username + `, I have reacted for you.`,
       fetchReply: true,
     });
     /*const reactionEmoji = message.guild.emojis.cache.find(
@@ -74,6 +74,13 @@ module.exports = {
           replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
         }
         message.reply(replyMessage);
+
+        console.log("Console log reply content: " + interaction.message.content)
+
+        // await interaction.editReply(
+        //   // interaction.user.username + " said: **" + query + "**\n*(Model: " + selectedModel + ")*\n" + result
+        //   // //+ "\nTokens used: " + usage + "."
+        // );
       } else {
         message.reply("Not enough for a stack right now. Try again later!");
       }
