@@ -106,7 +106,7 @@ module.exports = {
     }
 
     const query = interaction.options.getString("query");
-    const parameterModel = interation.options.getInteger("model");
+    const parameterModel = interaction.options.getInteger("model");
     var selectedModel = gpt3;
 
     if(parameterModel === 4) {
