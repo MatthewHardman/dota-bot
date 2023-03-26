@@ -38,7 +38,24 @@ module.exports = {
 
     try {
       const imageUrl = await getImage(prompt);
-      await interaction.editReply({ content: "Prompt: " + prompt + "\n", embed: {"image": { "url": imageUrl}}});
+      const newEmbed = {
+        color: 0x0099ff,
+        title: prompt,
+        author: {
+          name: interaction.member.displayName,
+          icon_url: interaction.member.avatar,
+        },
+        description: 'Art created by WSKBosch and the author.',
+        thumbnail: {
+          url: imageUrl,
+        },
+        image: {
+          url: imageUrl,
+        },
+        timestamp: new Date().toISOString(),
+      }
+
+      await interaction.editReply({ content: "Prompt: " + prompt + "\n", embed: newEmbed});
     } catch (error) {
       console.error(`Error while calling OpenAI Images API: ${error.message}`);
       await interaction.editReply(
