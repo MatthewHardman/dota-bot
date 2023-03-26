@@ -42,7 +42,7 @@ module.exports = {
     try {
       const imageUrl = await getImage(prompt);
 
-      await interaction.editReply({ content: "Prompt: " + prompt + "\n", embed: {
+      await interaction.editReply({ embeds: {
         color: 0x0099ff,
         title: prompt,
         author: {
