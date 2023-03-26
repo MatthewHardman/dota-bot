@@ -46,32 +46,32 @@ module.exports = {
       await interaction.editReply({ embeds: [{
         color: 3447003,
         author: {
-          name: interaction.user.displayName,
+          name: interaction.member.user.displayName,
           icon_url: "https://www.google.com"
           //"https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpg"
         },
-        thumbnail: {
-          url: "http://i.imgur.com/p2qNFag.png"
-        },
+        // thumbnail: {
+        //   url: "http://i.imgur.com/p2qNFag.png"
+        // },
         image: {
           url: imageUrl
         },
         title: prompt,
-        description: "Generative art created by the WSKBosch bot and " + interaction.user.displayName,
-        fields: [{
-          name: "This is a single field title, it can hold 256 characters",
-          value: "This is a field value, it can hold 1024 characters.",
-          inline: false
-        }],
+        description: "Generative art created by the WSKBosch bot and " + interaction.member.user.displayName,
+        // fields: [{
+        //   name: "This is a single field title, it can hold 256 characters",
+        //   value: "This is a field value, it can hold 1024 characters.",
+        //   inline: false
+        // }],
         timestamp: new Date(),
         footer: {
           icon_url: "",
-          text: "This is the footer text, it can hold 2048 characters"
+          text: "Thanks for playing!"
         }
       }]});
     } catch (error) {
       console.log("Image Prompt: " + prompt);
-      console.log("Author: " + interaction.user.displayName);
+      console.log("Author: " + interaction.member.user.displayName);
       console.error(`Error while calling OpenAI Images API: ${error.message}`);
       await interaction.editReply(
         "An error occurred while processing your request. Please try again later."
