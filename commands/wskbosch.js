@@ -89,7 +89,23 @@ module.exports = {
           icon_url: "",
           text: "Thanks for playing!"
         }
-      }]});
+      },
+      {
+        image: {
+          url: imageUrl
+        }
+      },
+      {
+        image: {
+          url: imageUrl
+        }
+      },
+      {
+        image: {
+          url: imageUrl
+        }
+      }
+      ]});
     } catch (error) {
       console.log("Image Prompt: " + prompt);
       console.log(interaction.user.username);
