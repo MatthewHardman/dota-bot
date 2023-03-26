@@ -35,6 +35,7 @@ module.exports = {
     ),
   async execute(interaction) {
     const prompt = interaction.options.getString("prompt");
+    console.log(interaction.member);
 
     // Defer the reply
     await interaction.deferReply();
@@ -49,9 +50,6 @@ module.exports = {
           name: interaction.member.user.displayName,
           icon_url: "https://www.google.com"
           //"https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpg"
-        },
-        thumbnail: {
-          url: "http://i.imgur.com/p2qNFag.png"
         },
         image: {
           url: imageUrl
