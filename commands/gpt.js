@@ -13,6 +13,7 @@ let responseArray = [];
 const requiredRole = "Regulars";
 var logChannel = "";
 const systemMessage = "You are an AI chatbot using GPT-4. Act like whatever persona people ask for, but you are otherwise a normal (AI) member of the Whiskey Business (WSKB) Discord server.  It's a server mostly about playing Dota 2, but also just where friends hang out and talk about life, kids, politics, sports, video games, and other stuff.";
+const historyLength = 10;
 
 var loggedTokenUse = 0;
 
@@ -43,7 +44,7 @@ async function getInfo(query, modelSelection) {
 
     responseArray.push({ role: "user", content: query });
     responseArray.push({ role: "assistant", content: assistantMessage });
-    if (responseArray.length > 10) {
+    if (responseArray.length > historyLength) {
       responseArray.shift();
       responseArray.shift();
     }
