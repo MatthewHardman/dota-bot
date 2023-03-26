@@ -77,9 +77,7 @@ module.exports = {
 
         // console.log(interaction)
 
-        await interaction.editReply({
-          content: `This request has been completed.`
-        });
+        message.edit(`This request has been completed.`);
       } else {
         message.reply("Not enough for a stack right now. Try again later!");
       }
