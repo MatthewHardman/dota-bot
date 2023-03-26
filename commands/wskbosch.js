@@ -16,8 +16,11 @@ async function getImage(prompt) {
     size: "1024x1024",
   });
 
-  const imageUrl = response.data[0].url;
+  const imageUrl = response.data.data[0].url;
   return imageUrl;
+
+  console.log("Image API Response: " + response.data);
+  console.log("Image url: " + imageUrl);
 }
 
 module.exports = {
