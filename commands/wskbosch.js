@@ -47,9 +47,8 @@ module.exports = {
       await interaction.editReply({ embeds: [{
         color: 3447003,
         author: {
-          name: interaction.member.user.displayName,
-          icon_url: "https://www.google.com"
-          //"https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpg"
+          name: interaction.member.nickname,
+          icon_url: "https://cdn.discordapp.com/avatars/"+interaction.member.user.id+"/"+interaction.member.user.avatar+".jpg"
         },
         image: {
           url: imageUrl
@@ -69,7 +68,7 @@ module.exports = {
       }]});
     } catch (error) {
       console.log("Image Prompt: " + prompt);
-      console.log(interaction.member.user.displayName);
+      console.log(interaction.member.nickname);
       console.error(`Error while calling OpenAI Images API: ${error.message}`);
       await interaction.editReply(
         "An error occurred while processing your request. Please try again later."
