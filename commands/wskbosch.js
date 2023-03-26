@@ -65,7 +65,7 @@ module.exports = {
         }],
         timestamp: new Date(),
         footer: {
-          icon_url: "./DotaBot.png",
+          icon_url: "",
           text: "This is the footer text, it can hold 2048 characters"
         }
       }]});
