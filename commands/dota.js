@@ -26,8 +26,14 @@ module.exports = {
     const role = interaction.guild.roles.cache.find(
       (role) => role.id === "1071259658943217745"
     );
+
+    const currentTime = Math.floor(Date.now() / 1000);
+    const endTime = currentTime + timeOutInMin * 60;
+    const formattedStartTime = `<t:${currentTime}:F>`;
+    const formattedEndTime = `<t:${endTime}:R>`;
+
     const message = await interaction.reply({
-      content: ` Hello <@&${role.id}>, ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait ${timeOutInMin} minutes! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
+      content: ` Hello <@&${role.id}>, ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait until ${formattedEndTime} minutes! Please react if you'd like to be pinged when a stack forms. ` + interaction.member.nickname + `, I have reacted for you.`,
       fetchReply: true,
     });
     /*const reactionEmoji = message.guild.emojis.cache.find(
