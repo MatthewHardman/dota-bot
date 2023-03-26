@@ -82,9 +82,10 @@ module.exports = {
       console.log("Image Prompt: " + prompt);
       console.log(interaction.member.nickname);
       console.error(`Error while calling OpenAI Images API: ${error.message}`);
-      await interaction.editReply(
-        "An error occurred while processing your request. Please try again later."
-      );
+      await interaction.editReply({
+        content: "An error occurred while processing your request. Please try again later.",
+        ephemeral: true
+      });
     }
   },
 };
