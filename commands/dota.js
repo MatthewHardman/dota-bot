@@ -75,7 +75,9 @@ module.exports = {
         }
         message.reply(replyMessage);
 
-        message.edit(`*The stack of ${stackSize} requested by ${interaction.user.username} formed ${formattedEndTime}.*`);
+        const formedTime = Math.floor(Date.now()/1000)
+
+        message.edit(`*The stack of ${stackSize} requested by ${interaction.user.username} formed <t:${formedTime}:R>.*`);
       } else {
         message.reply("Not enough for a stack right now. Try again later!");
          message.edit(`*The stack didn't form in time for ${interaction.user.username}.*`);
