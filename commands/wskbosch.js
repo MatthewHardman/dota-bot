@@ -46,7 +46,7 @@ module.exports = {
         color: 3447003,
         author: {
           name: interaction.user.displayName,
-          icon_url: interaction.user.avatar
+          icon_url: "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpg"
         },
         thumbnail: {
           url: "http://i.imgur.com/p2qNFag.png"
