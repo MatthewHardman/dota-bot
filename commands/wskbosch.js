@@ -70,6 +70,7 @@ module.exports = {
 
       await interaction.editReply({ embeds: [{
         color: 3447003,
+        url: "https://labs.openai.com/",
         author: {
           name: interaction.member.nickname,
           icon_url: "https://cdn.discordapp.com/avatars/"+interaction.member.user.id+"/"+interaction.member.user.avatar+".jpg"
@@ -91,16 +92,19 @@ module.exports = {
         }
       },
       {
+        url: "https://labs.openai.com/",
         image: {
           url: imageUrl
         }
       },
       {
+        url: "https://labs.openai.com/",
         image: {
           url: imageUrl
         }
       },
       {
+        url: "https://labs.openai.com/",
         image: {
           url: imageUrl
         }
