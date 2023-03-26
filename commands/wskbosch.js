@@ -69,6 +69,9 @@ module.exports = {
         }
       }]});
     } catch (error) {
+      console.log("Image URL: " + imageUrl);
+      console.log("Image Prompt: " + prompt);
+      console.log("Author: " + interaction.user.displayName);
       console.error(`Error while calling OpenAI Images API: ${error.message}`);
       await interaction.editReply(
         "An error occurred while processing your request. Please try again later."
