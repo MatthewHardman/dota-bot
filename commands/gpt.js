@@ -85,7 +85,6 @@ module.exports = {
         .setRequired(false)
         .setMaxValue(4)
         .setMinValue(3)
-        .setDefault(3)
     ),
   async execute(interaction) {
     const botDevRole = interaction.guild.roles.cache.find(
@@ -110,10 +109,10 @@ module.exports = {
     const parameterModel = interation.options.getInteger("model");
     var selectedModel = gpt3;
 
-    if(parameterModel === 3) {
-      selectedModel = gpt3;
-    } else {
+    if(parameterModel === 4) {
       selectedModel = gpt4;
+    } else {
+      selectedModel = gpt3;
     }
 
     // Defer the reply
