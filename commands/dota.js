@@ -75,7 +75,7 @@ module.exports = {
         }
         message.reply(replyMessage);
 
-        console.log("Console log reply content: " + interaction.message.content)
+        console.log(interaction)
 
         // await interaction.editReply(
         //   // interaction.user.username + " said: **" + query + "**\n*(Model: " + selectedModel + ")*\n" + result
