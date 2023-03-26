@@ -134,7 +134,11 @@ module.exports = {
 
     // Log token usage after processing the command
     // const usage = 0;
-    logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
+    if(selectedModel === gpt4) {
+      logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
+    } else {
+      logChannel.send(`GPT-3.5-Turbo used, these tokens are free! (but there were ${loggedTokenUse} used)`);
+    }
 
     if (result) {
       await interaction.editReply(
