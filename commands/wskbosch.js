@@ -39,6 +39,10 @@ module.exports = {
     const prompt = interaction.options.getString("prompt");
     //console.log(interaction.member);
 
+    const botDevRole = interaction.guild.roles.cache.find(
+      (role) => role.name === requiredRole
+    );
+
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
       await interaction.reply({
         content:
