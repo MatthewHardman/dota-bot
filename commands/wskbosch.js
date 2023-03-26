@@ -41,6 +41,7 @@ module.exports = {
 
     try {
       const imageUrl = await getImage(prompt);
+      console.log("Image URL: " + imageUrl);
 
       await interaction.editReply({ embeds: [{
         color: 3447003,
@@ -69,7 +70,6 @@ module.exports = {
         }
       }]});
     } catch (error) {
-      console.log("Image URL: " + imageUrl);
       console.log("Image Prompt: " + prompt);
       console.log("Author: " + interaction.user.displayName);
       console.error(`Error while calling OpenAI Images API: ${error.message}`);
