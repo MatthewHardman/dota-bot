@@ -32,14 +32,6 @@ module.exports = {
     const formattedStartTime = `<t:${currentTime}:F>`;
     const formattedEndTime = `<t:${endTime}:R>`;
 
-    const message = await interaction.reply({
-      content: `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms.\n*(` + interaction.user.username + `, I have reacted for you.)*`,
-      fetchReply: true,
-    });
-    /*const reactionEmoji = message.guild.emojis.cache.find(
-      (emoji) => emoji.name === "dotes"
-    );*/
-
     // just attempting to add a button that does nothing yet, adding more comments to force a deploy
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
@@ -47,6 +39,16 @@ module.exports = {
       .setStyle(ButtonStyle.Primary);
 
     const row = new ActionRowBuilder().addComponents(joinButton)
+
+    const message = await interaction.reply({
+      content: `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms.\n*(` + interaction.user.username + `, I have reacted for you.)*`,
+      fetchReply: true,
+      components: [row],
+    });
+    /*const reactionEmoji = message.guild.emojis.cache.find(
+      (emoji) => emoji.name === "dotes"
+    );*/
+
 
     message.react("👍");
     const filter = (reaction, user) => {
