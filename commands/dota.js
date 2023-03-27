@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client } = require("discord.js");
+const { SlashCommandBuilder, Client, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -39,6 +39,15 @@ module.exports = {
     /*const reactionEmoji = message.guild.emojis.cache.find(
       (emoji) => emoji.name === "dotes"
     );*/
+
+    // just attempting to add a button that does nothing yet
+    const joinButton = new ButtonBuilder()
+      .setCustomId("join_dota")
+      .setLabel("Test")
+      .setStyle(ButtonStyle.Primary);
+
+    const row = new ActionRowBuilder().addComponents(joinButton)
+
     message.react("👍");
     const filter = (reaction, user) => {
       return ["👍"].includes(reaction.emoji.name);
