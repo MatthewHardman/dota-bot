@@ -54,9 +54,9 @@ module.exports = {
 
     const message = await interaction.reply({
       content:
-        `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms.\n*(` +
+        `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. \n*(` +
         interaction.user.username +
-        `, I have reacted for you.)*`,
+        `, I have reacted for you. But not anymore cuz its a button but you don't have to click it.)*`,
       fetchReply: true,
       components: [row],
     });
@@ -70,8 +70,22 @@ module.exports = {
     idArray.push(interaction.user.id);
 
     collector.on("collect", (i) => {
-      if (i.user != interaction.user && !idArray.includes(i.user.id)) {
+      if (!idArray.includes(i.user.id)) {
         idArray.push(i.user.id);
+        i.reply({
+          content: `Thanks for clicking! I'll notify you if/when a stack forms`,
+          ephemeral: true,
+        });
+      } else if (i.user == interaction.user) {
+        i.reply({
+          content: `I told you that you didn't have to click on it, dummy.`,
+          ephemeral: true,
+        });
+      } else if (idArray.includes(i.user.id)) {
+        i.reply({
+          content: `Dont' be greedy, you've already clicked once.`,
+          ephemeral: true,
+        });
       }
       if (idArray.length == stackSize) {
         collector.stop();
