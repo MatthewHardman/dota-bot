@@ -72,16 +72,25 @@ module.exports = {
     });
 
     let idArray = [];
+    let usernameArray = [];
     idArray.push(interaction.user.id);
 
     collector.on("collect", (i) => {
       if (i.customId == "join_dota") {
         if (!idArray.includes(i.user.id)) {
           idArray.push(i.user.id);
+          usernameArray.push(i.user.username);
           i.reply({
             content: `Thanks for clicking! I'll notify you if/when a stack forms`,
             ephemeral: true,
           });
+          let replyMessage = `So far the following people have said they will play: `;
+          for (let i = 0; i < usernameArray.length; i++) {
+            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}>`);
+          }
+          message.edit(
+            `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
+          );
         } else if (i.user == interaction.user) {
           i.reply({
             content: `I told you that you didn't have to click on it, dummy.`,
@@ -101,10 +110,19 @@ module.exports = {
         if (idArray.includes(i.user.id)) {
           index = idArray.indexOf(i.user.id);
           idArray.splice(index, 1);
+          index = usernameArray.indexOf(i.user.username);
+          usernameArray.splice(index, 1);
           i.reply({
             content: `Please don't go.`,
             ephemeral: true,
           });
+          let replyMessage = `So far the following people have said they will play: `;
+          for (let i = 0; i < usernameArray.length; i++) {
+            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}>`);
+          }
+          message.edit(
+            `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
+          );
         } else {
           i.reply({
             content: `You haven't even said you could play yet!`,
