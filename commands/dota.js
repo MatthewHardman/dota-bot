@@ -33,11 +33,11 @@ module.exports = {
     const role = interaction.guild.roles.cache.find(
       (role) => role.id === "1071259658943217745"
     );
-
+    /*
     const reactionEmoji = interaction.guild.emojis.cache.find(
       (emoji) => emoji.name === "dotes"
     );
-
+    */
     const currentTime = Math.floor(Date.now() / 1000);
     const endTime = currentTime + timeOutInMin * 60;
     const formattedStartTime = `<t:${currentTime}:F>`;
@@ -47,8 +47,8 @@ module.exports = {
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
       .setLabel("Test")
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji(reactionEmoji);
+      .setStyle(ButtonStyle.Primary);
+    //.setEmoji(reactionEmoji);
 
     const row = new ActionRowBuilder().addComponents(joinButton);
 
