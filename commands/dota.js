@@ -34,7 +34,7 @@ module.exports = {
       (role) => role.id === "1071259658943217745"
     );
 
-    const reactionEmoji = message.guild.emojis.cache.find(
+    const reactionEmoji = interaction.guild.emojis.cache.find(
       (emoji) => emoji.name === "dotes"
     );
 
