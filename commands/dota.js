@@ -50,7 +50,12 @@ module.exports = {
       .setStyle(ButtonStyle.Primary);
     //.setEmoji(reactionEmoji);
 
-    const row = new ActionRowBuilder().addComponents(joinButton);
+    const leaveButton = new ButtonBuilder()
+      .setCustomId("leave_dota")
+      .setLabel("Click here if you can't play anymore")
+      .setStyle(ButtonStyle.Danger);
+
+    const row = new ActionRowBuilder().addComponents(joinButton, leaveButton);
 
     const message = await interaction.reply({
       content:
@@ -77,6 +82,7 @@ module.exports = {
           ephemeral: true,
         });
       } else if (i.user == interaction.user) {
+        console.log(i);
         i.reply({
           content: `I told you that you didn't have to click on it, dummy.`,
           ephemeral: true,
@@ -102,14 +108,16 @@ module.exports = {
 
         const formedTime = Math.floor(Date.now() / 1000);
 
-        message.edit(
-          `*The stack of ${stackSize} requested by ${interaction.user.username} formed <t:${formedTime}:R>.*`
-        );
+        message.edit({
+          content: `*The stack of ${stackSize} requested by ${interaction.user.username} formed <t:${formedTime}:R>.*`,
+          components: [],
+        });
       } else {
         message.reply("Not enough for a stack right now. Try again later!");
-        message.edit(
-          `*The stack didn't form in time for ${interaction.user.username}.*`
-        );
+        message.edit({
+          content: `*The stack didn't form in time for ${interaction.user.username}.*`,
+          components: [],
+        });
       }
     });
 
