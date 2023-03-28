@@ -75,26 +75,42 @@ module.exports = {
     idArray.push(interaction.user.id);
 
     collector.on("collect", (i) => {
-      if (!idArray.includes(i.user.id)) {
-        idArray.push(i.user.id);
-        i.reply({
-          content: `Thanks for clicking! I'll notify you if/when a stack forms`,
-          ephemeral: true,
-        });
-      } else if (i.user == interaction.user) {
-        console.log(i);
-        i.reply({
-          content: `I told you that you didn't have to click on it, dummy.`,
-          ephemeral: true,
-        });
-      } else if (idArray.includes(i.user.id)) {
-        i.reply({
-          content: `Dont' be greedy, you've already clicked once.`,
-          ephemeral: true,
-        });
+      if (i.customId == "join_dota") {
+        if (!idArray.includes(i.user.id)) {
+          idArray.push(i.user.id);
+          i.reply({
+            content: `Thanks for clicking! I'll notify you if/when a stack forms`,
+            ephemeral: true,
+          });
+        } else if (i.user == interaction.user) {
+          i.reply({
+            content: `I told you that you didn't have to click on it, dummy.`,
+            ephemeral: true,
+          });
+        } else if (idArray.includes(i.user.id)) {
+          i.reply({
+            content: `Dont' be greedy, you've already clicked once.`,
+            ephemeral: true,
+          });
+        }
+        if (idArray.length == stackSize) {
+          collector.stop();
+        }
       }
-      if (idArray.length == stackSize) {
-        collector.stop();
+      if (i.customId == "leave_dota") {
+        if (idArray.includes(i.user.id)) {
+          index = idArray.indexOf(i.user.id);
+          idArray.splice(index, 1);
+          i.reply({
+            content: `Please don't go.`,
+            ephemeral: true,
+          });
+        } else {
+          i.reply({
+            content: `You haven't even said you could play yet!`,
+            ephemeral: true,
+          });
+        }
       }
     });
 
