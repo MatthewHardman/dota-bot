@@ -1,4 +1,11 @@
-const { SlashCommandBuilder, Client, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  Client,
+  ButtonBuilder,
+  ActionRowBuilder,
+  ButtonStyle,
+  ComponentType,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,6 +34,10 @@ module.exports = {
       (role) => role.id === "1071259658943217745"
     );
 
+    const reactionEmoji = message.guild.emojis.cache.find(
+      (emoji) => emoji.name === "dotes"
+    );
+
     const currentTime = Math.floor(Date.now() / 1000);
     const endTime = currentTime + timeOutInMin * 60;
     const formattedStartTime = `<t:${currentTime}:F>`;
@@ -36,20 +47,59 @@ module.exports = {
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
       .setLabel("Test")
-      .setStyle(ButtonStyle.Primary);
+      .setStyle(ButtonStyle.Primary)
+      .setEmoji(reactionEmoji);
 
-    const row = new ActionRowBuilder().addComponents(joinButton)
+    const row = new ActionRowBuilder().addComponents(joinButton);
 
     const message = await interaction.reply({
-      content: `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms.\n*(` + interaction.user.username + `, I have reacted for you.)*`,
+      content:
+        `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms.\n*(` +
+        interaction.user.username +
+        `, I have reacted for you.)*`,
       fetchReply: true,
       components: [row],
     });
-    /*const reactionEmoji = message.guild.emojis.cache.find(
-      (emoji) => emoji.name === "dotes"
-    );*/
 
+    const collector = message.createMessageComponentCollector({
+      ComponentType: ComponentType.Button,
+      time: timeOutInMS,
+    });
 
+    let idArray = [];
+    idArray.push(interaction.user.id);
+
+    collector.on("collect", (i) => {
+      if (i.user != interaction.user && !idArray.includes(i.user.id)) {
+        idArray.push(i.user.id);
+      }
+      if (idArray.length == stackSize) {
+        collector.stop();
+      }
+    });
+
+    collector.on("end", (collected) => {
+      if (idArray.length == stackSize) {
+        let replyMessage = `It's time to play!`;
+        for (let i = 0; i < idArray.length; i++) {
+          replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
+        }
+        message.reply(replyMessage);
+
+        const formedTime = Math.floor(Date.now() / 1000);
+
+        message.edit(
+          `*The stack of ${stackSize} requested by ${interaction.user.username} formed <t:${formedTime}:R>.*`
+        );
+      } else {
+        message.reply("Not enough for a stack right now. Try again later!");
+        message.edit(
+          `*The stack didn't form in time for ${interaction.user.username}.*`
+        );
+      }
+    });
+
+    /*
     message.react("👍");
     const filter = (reaction, user) => {
       return ["👍"].includes(reaction.emoji.name);
@@ -94,5 +144,6 @@ module.exports = {
          message.edit(`*The stack didn't form in time for ${interaction.user.username}.*`);
       }
     });
+    */
   },
 };
