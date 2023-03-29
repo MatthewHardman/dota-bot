@@ -62,7 +62,7 @@ module.exports = {
       return;
     }
 
-    const rawScheduledTime = Date.parse(scheduledTime/1000);
+    const rawScheduledTime = Date.parse(scheduledTime);
 
     console.log("scheduledTime: "+scheduledTime);
     console.log("rawST: "+rawScheduledTime);
@@ -81,7 +81,7 @@ module.exports = {
     }
 
     const message = await interaction.reply({
-      content: `A Dota game has been scheduled for <t:${rawScheduledTime}:R> (GMT) with a stack size of ${stackSize}. React with 👍 if you want to join.`,
+      content: `A Dota game has been scheduled for <t:${rawScheduledTime/1000}:R> with a stack size of ${stackSize}. React with 👍 if you want to join.`,
       fetchReply: true,
       ephemeral: false,
     });
