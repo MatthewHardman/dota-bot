@@ -49,7 +49,7 @@ module.exports = {
     // just attempting to add a button that does nothing yet, adding more comments to force a deploy
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
-      .setLabel(joinLabel);
+      .setLabel(joinLabel)
       .setStyle(ButtonStyle.Primary);
     //.setEmoji(reactionEmoji);
 
