@@ -1,4 +1,11 @@
-const { SlashCommandBuilder, Client } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  Client,
+  ButtonBuilder,
+  ActionRowBuilder,
+  ButtonStyle,
+  ComponentType,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -26,13 +33,129 @@ module.exports = {
     const role = interaction.guild.roles.cache.find(
       (role) => role.id === "1071259658943217745"
     );
-    const message = await interaction.reply({
-      content: ` Hello <@&${role.id}>, ${interaction.user.username} would like to play with a stack size of ${stackSize} and is willing to wait ${timeOutInMin} minutes! Please react if you'd like to be pinged when a stack forms. If you initiated the command, I have reacted for you.`,
-      fetchReply: true,
-    });
-    /*const reactionEmoji = message.guild.emojis.cache.find(
+    /*
+    const reactionEmoji = interaction.guild.emojis.cache.find(
       (emoji) => emoji.name === "dotes"
-    );*/
+    );
+    */
+    const currentTime = Math.floor(Date.now() / 1000);
+    const endTime = currentTime + timeOutInMin * 60;
+    const formattedStartTime = `<t:${currentTime}:F>`;
+    const formattedEndTime = `<t:${endTime}:R>`;
+
+    // just attempting to add a button that does nothing yet, adding more comments to force a deploy
+    const joinButton = new ButtonBuilder()
+      .setCustomId("join_dota")
+      .setLabel("Click Here to Play")
+      .setStyle(ButtonStyle.Primary);
+    //.setEmoji(reactionEmoji);
+
+    const leaveButton = new ButtonBuilder()
+      .setCustomId("leave_dota")
+      .setLabel("Click here if you can't play anymore")
+      .setStyle(ButtonStyle.Danger);
+
+    const row = new ActionRowBuilder().addComponents(joinButton, leaveButton);
+
+    const message = await interaction.reply({
+      content:
+        `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. \n*(` +
+        interaction.user.username +
+        `, I have reacted for you. But not anymore cuz its a button but you don't have to click it.)*`,
+      fetchReply: true,
+      components: [row],
+    });
+
+    const collector = message.createMessageComponentCollector({
+      ComponentType: ComponentType.Button,
+      time: timeOutInMS,
+    });
+
+    let idArray = [];
+    let usernameArray = [];
+    idArray.push(interaction.user.id);
+
+    collector.on("collect", (i) => {
+      if (i.customId == "join_dota") {
+        if (!idArray.includes(i.user.id)) {
+          idArray.push(i.user.id);
+          usernameArray.push(i.user.username);
+          i.reply({
+            content: `Thanks for clicking! I'll notify you if/when a stack forms`,
+            ephemeral: true,
+          });
+          let replyMessage = `So far the following ${usernameArray.length()} people have said they will play: `;
+          for (let i = 0; i < usernameArray.length; i++) {
+            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
+          }
+          message.edit(
+            `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
+          );
+        } else if (i.user == interaction.user) {
+          i.reply({
+            content: `I told you that you didn't have to click on it, dummy.`,
+            ephemeral: true,
+          });
+        } else if (idArray.includes(i.user.id)) {
+          i.reply({
+            content: `Dont' be greedy, you've already clicked once.`,
+            ephemeral: true,
+          });
+        }
+        if (idArray.length == stackSize) {
+          collector.stop();
+        }
+      }
+      if (i.customId == "leave_dota") {
+        if (idArray.includes(i.user.id)) {
+          index = idArray.indexOf(i.user.id);
+          idArray.splice(index, 1);
+          index = usernameArray.indexOf(i.user.username);
+          usernameArray.splice(index, 1);
+          i.reply({
+            content: `Please don't go.`,
+            ephemeral: true,
+          });
+          let replyMessage = `So far the following ${usernameArray.length()} people have said they will play: `;
+          for (let i = 0; i < usernameArray.length; i++) {
+            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
+          }
+          message.edit(
+            `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
+          );
+        } else {
+          i.reply({
+            content: `You haven't even said you could play yet!`,
+            ephemeral: true,
+          });
+        }
+      }
+    });
+
+    collector.on("end", (collected) => {
+      if (idArray.length == stackSize) {
+        let replyMessage = `It's time to play!`;
+        for (let i = 0; i < idArray.length; i++) {
+          replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
+        }
+        message.reply(replyMessage);
+
+        const formedTime = Math.floor(Date.now() / 1000);
+
+        message.edit({
+          content: `*The stack of ${stackSize} requested by ${interaction.user.username} formed <t:${formedTime}:R>.*`,
+          components: [],
+        });
+      } else {
+        message.reply("Not enough for a stack right now. Try again later!");
+        message.edit({
+          content: `*The stack didn't form in time for ${interaction.user.username}.*`,
+          components: [],
+        });
+      }
+    });
+
+    /*
     message.react("👍");
     const filter = (reaction, user) => {
       return ["👍"].includes(reaction.emoji.name);
@@ -68,9 +191,15 @@ module.exports = {
           replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
         }
         message.reply(replyMessage);
+
+        const formedTime = Math.floor(Date.now()/1000)
+
+        message.edit(`*The stack of ${stackSize} requested by ${interaction.user.username} formed <t:${formedTime}:R>.*`);
       } else {
         message.reply("Not enough for a stack right now. Try again later!");
+         message.edit(`*The stack didn't form in time for ${interaction.user.username}.*`);
       }
     });
+    */
   },
 };

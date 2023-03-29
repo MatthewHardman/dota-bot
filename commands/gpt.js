@@ -7,31 +7,66 @@ const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
-async function getInfo(query) {
+const gpt4 = "gpt-4";
+const gpt3 = "gpt-3.5-turbo";
+let responseArray = [];
+const requiredRole = "Regulars";
+var logChannel = "";
+const systemMessage = "You are an AI chatbot using GPT-4. Act like whatever persona people ask for, but you are otherwise a normal (AI) member of the Whiskey Business (WSKB) Discord server.  It's a server mostly about playing Dota 2, but also just where friends hang out and talk about life, kids, politics, sports, video games, and other stuff.";
+const historyLength = 10;
+
+var loggedTokenUse = 0;
+
+async function getInfo(query, modelSelection) {
   const openai = new OpenAIApi(configuration);
 
   try {
-    const completion = await openai.Completion.create({
-      model: 'gpt-4',
+    const completion = await openai.createChatCompletion({
+      model: modelSelection,
       messages: [
-        { role: 'system', content: 'You are an AI chatbot using GPT-4.' },
-        { role: 'user', content: query }
+        {
+          role: "system",
+          content:
+            systemMessage,
+        },
+        ...responseArray,
+        { role: "user", content: query },
       ],
-
-
-      max_tokens: 1024,
+      max_tokens: 2048,
       n: 1,
       stop: null,
       temperature: 0.7,
     });
 
     const assistantMessage = completion.data.choices[0].message.content.trim();
+    const tokensUsed = completion.data.usage.total_tokens;
+    loggedTokenUse = loggedTokenUse + tokensUsed;
+
+    responseArray.push({ role: "user", content: query });
+    responseArray.push({ role: "assistant", content: assistantMessage });
+    if (responseArray.length > historyLength) {
+      responseArray.shift();
+      responseArray.shift();
+    }
+    console.log("Tokens for this query: " + tokensUsed);
+    console.log("Total tokens used since last reboot: " + loggedTokenUse)
+
+    
 
     return assistantMessage;
   } catch (error) {
     console.error(`Error while calling OpenAI API: ${error.message}`);
     return `An error occurred while processing your request. Please try again later. \nError: ${error.message}`;
   }
+}
+
+async function isAboutDota(query) {
+  const aboutDotaQuery = `Is this question about Dota 2 the video game? (Only answer with a single word, yes or no.) "${query}"`;
+  const response = await getInfo(aboutDotaQuery, gpt3);
+  console.log(query + ": " + response);
+  // Check if the response from GPT-4 indicates that the question is about Dota
+  return response.toLowerCase().includes("yes");
+  return true
 }
 
 module.exports = {
@@ -44,35 +79,78 @@ module.exports = {
         .setName("query")
         .setDescription("The query you want to ask GPT-4 API")
         .setRequired(true)
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("model")
+        .setDescription("Which GPT model you want to use (only Regulars can use GPT-4)")
+        .setRequired(false)
+        .setMaxValue(4)
+        .setMinValue(3)
     ),
   async execute(interaction) {
     const botDevRole = interaction.guild.roles.cache.find(
-      (role) => role.name === "Bot Dev"
+      (role) => role.name === requiredRole
     );
+
+    logChannel = interaction.guild.channels.cache.find((channel) => channel.name === "bot-logs");
+    // console.log("Bot Log Channel: " + logChannel);
+    //Only regulars can access this bot
+    //changing a comment to force a deployment
     if (!interaction.member.roles.cache.has(botDevRole.id)) {
       await interaction.reply({
         content:
-          "You do not have the required role (Bot Dev) to use this command.",
+          "You do not have the required role "+ requiredRole + " to use this command.",
 
         ephemeral: true,
       });
       return;
     }
 
+    const query = interaction.options.getString("query");
+    const parameterModel = interaction.options.getInteger("model");
+    var selectedModel = gpt3;
+
+    if(parameterModel === 4) {
+      selectedModel = gpt4;
+    } else {
+      selectedModel = gpt3;
+    }
+
     // Defer the reply
-  await interaction.deferReply();
+    await interaction.deferReply();
 
-  const query = interaction.options.getString("query");
+    //const isDotaRelated = await isAboutDota(query);
 
-  // Call the getInfo function after deferring the reply
-  const result = await getInfo(query);
+    // if (!isDotaRelated) {
+    //   await interaction.deleteReply();
+    //   await interaction.followUp({
+    //     content: "This command only accepts questions about Dota.",
+    //     ephemeral: true,
+    //   });
+    //   return;
+    // }
 
-  if (result) {
-    await interaction.editReply(result);
-  } else {
-    await interaction.editReply(
-      "Sorry, I could not find any information for that query."
-    );
-  }
+    // Call the getInfo function after deferring the reply
+    const result = await getInfo(query, selectedModel);
+
+    // Log token usage after processing the command
+    // const usage = 0;
+    if(selectedModel === gpt4) {
+      logChannel.send(`Tokens used since last reboot: ${loggedTokenUse} tokens.`);
+    } else {
+      logChannel.send(`GPT-3.5-Turbo used, these tokens are free! (but there were ${loggedTokenUse} used)`);
+    }
+
+    if (result) {
+      await interaction.editReply(
+        interaction.user.username + " said: **" + query + "**\n*(Model: " + selectedModel + ")*\n" + result
+        //+ "\nTokens used: " + usage + "."
+      );
+    } else {
+      await interaction.editReply(
+        "Sorry, I could not find any information for that query."
+      );
+    }
   },
 };

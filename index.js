@@ -39,4 +39,34 @@ for (const file of eventFiles) {
   }
 }
 
+client.on("messageCreate", async (message) => {
+  // Ignore messages from bots
+  if (message.author.bot) return;
+  
+  // Check if the message is a reply and mentions the bot
+  if (message.reference && message.mentions.has(client.user)) {
+    console.log("Funny test commencing...");
+    // Get the replied message
+    const repliedMessage = await message.channel.messages.fetch(message.reference.messageId);
+    
+    // Call the isFunnyJoke function with the replied message content
+    const result = await isFunnyJoke(repliedMessage.content);
+    
+    // Reply with the result ("yes" or "no")
+    message.reply(result);
+  }
+});
+
+async function isFunnyJoke(message) {
+  const query = `Is this joke funny? "${message}"`;
+  const response = await getInfo(query, 'gpt-3.5-turbo');
+
+  // Check if the response from GPT-4 indicates that the joke is funny
+  if (response.toLowerCase().includes("yes")) {
+    return "Yes, that's funny";
+  } else {
+    return "No, that isn't funny.";
+  }
+}
+
 client.login(token);
