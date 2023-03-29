@@ -64,6 +64,11 @@ module.exports = {
 
     const rawScheduledTime = Date.parse(scheduledTime);
 
+    console.log("scheduledTime: "+scheduledTime);
+    console.log("rawST: "+rawScheduledTime);
+    console.log("standardizedTime: "+standardizedTime);
+    console.log("rawStT: "+Date.parse(standardizedTime));
+
     const role = interaction.guild.roles.cache.find(
       (role) => role.name.toLowerCase() === "dooters"
     );
