@@ -48,11 +48,11 @@ module.exports = {
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
       .setLabel(
-        if (!idArray.includes(i.user.id)) {
+        {if (!idArray.includes(i.user.id)) {
           "You're in the stack!"
         } elese {
           "Join stack"
-        })
+        }})
       .setStyle(ButtonStyle.Primary);
     //.setEmoji(reactionEmoji);
 
