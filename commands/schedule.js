@@ -33,22 +33,22 @@ module.exports = {
 
     //const query = interaction.options.getString("query");
     const timeZoneOffset = interaction.options.getInteger("timezone");
-    const timeInput = parseInt(interaction.options.getString("time"))+timeZoneOffset*100;
 
-    console.log("Requested time: "+interaction.options.getString("time"));
-    console.log("Adjusted for GMT: "+timeInput);
+    console.log("Requested time: "+timeInput);
+    console.log("Adjusted for GMT: "+standardizedTime);
+
     //const adjustedQuery = adjustScheduledTime(query, timeZoneOffset);
     //const result = await getInfo(adjustedQuery);
 
-    if (!/^\d{4}$/.test(timeInput)) {
+    if (!/^\d{4}$/.test(standardizedTime)) {
       await interaction.reply(
         "Invalid time format. Please provide a 4-digit time in 24-hour format, e.g., 1430 for 14:30."
       );
       return;
     }
 
-    const scheduledHour = parseInt(timeInput.slice(0, 2));
-    const scheduledMinute = parseInt(timeInput.slice(2));
+    const scheduledHour = parseInt(standardizedTime.slice(0, 2));
+    const scheduledMinute = parseInt(standardizedTime.slice(2));
 
     const now = new Date();
     const scheduledTime = new Date(now);
@@ -125,41 +125,3 @@ module.exports = {
     }, scheduledTime - now);
   },
 };
-
-
-// function adjustScheduledTime(query, timeZoneOffset) {
-//   const timeRegex = /(\d{1,2}:\d{2}\s?(?:[AP]M)?)/gi;
-//   const timeMatches = query.match(timeRegex);
-
-//   if (timeMatches) {
-//     timeMatches.forEach((time) => {
-//       const adjustedTime = adjustTime(time, timeZoneOffset);
-//       query = query.replace(time, adjustedTime);
-//     });
-//   }
-
-//   return query;
-// }
-
-// function adjustTime(time, timeZoneOffset) {
-//   const isAMPM = /(?:[AP]M)?/i.test(time);
-//   let [hours, minutes] = time.replace(/(?:[AP]M)?/i, "").split(":");
-
-//   hours = parseInt(hours, 10) + timeZoneOffset;
-//   if (isAMPM) {
-//     if (hours < 1) {
-//       hours += 12;
-//     } else if (hours > 12) {
-//       hours -= 12;
-//     }
-//   } else {
-//     if (hours < 0) {
-//       hours += 24;
-//     } else if (hours > 23) {
-//       hours -= 24;
-//     }
-//   }
-
-//   return `${hours}:${minutes}${isAMPM ? (hours >= 12 ? " PM" : " AM") : ""}`;
-// }
-
