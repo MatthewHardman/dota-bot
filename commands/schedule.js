@@ -36,10 +36,9 @@ module.exports = {
     const timeInput = interaction.options.getString("time");
     const standardizedTime = (parseInt(timeInput)+timeZoneOffset*100).toString();
 
-    console.log("Requested time: "+timeInput);
-    console.log("Adjusted for GMT: "+standardizedTime);
-    //const adjustedQuery = adjustScheduledTime(query, timeZoneOffset);
-    //const result = await getInfo(adjustedQuery);
+    console.log("Requested time: "+interaction.options.getString("time"));
+    console.log("Adjusted for GMT: "+timeInput);
+
 
     if (!/^\d{4}$/.test(standardizedTime)) {
       await interaction.reply(
