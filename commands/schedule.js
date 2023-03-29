@@ -74,7 +74,7 @@ module.exports = {
     }
 
     const message = await interaction.reply({
-      content: `A Dota game has been scheduled for ${scheduledTime.toLocaleString()} (${timezoneString}) with a stack size of ${stackSize}. React with 👍 if you want to join.`,
+      content: `A Dota game has been scheduled for ${scheduledTime.toLocaleString()} (GMT) with a stack size of ${stackSize}. React with 👍 if you want to join.`,
       fetchReply: true,
       ephemeral: false,
     });
