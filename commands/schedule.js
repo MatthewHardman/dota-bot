@@ -62,7 +62,7 @@ module.exports = {
       return;
     }
 
-    const rawScheduledTime = Date.parse(scheduledTime);
+    const rawScheduledTime = Date.parse(scheduledTime/1000);
 
     console.log("scheduledTime: "+scheduledTime);
     console.log("rawST: "+rawScheduledTime);
