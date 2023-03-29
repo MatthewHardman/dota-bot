@@ -33,7 +33,10 @@ module.exports = {
 
     //const query = interaction.options.getString("query");
     const timeZoneOffset = interaction.options.getInteger("timezone");
-    const timeInput = interaction.options.getString("time")+timeZoneOffset*100;
+    const timeInput = parseInt(interaction.options.getString("time"))+timeZoneOffset*100;
+
+    console.log("Requested time: "+interaction.options.getString("time"));
+    console.log("Adjusted for GMT: "+timeInput);
     //const adjustedQuery = adjustScheduledTime(query, timeZoneOffset);
     //const result = await getInfo(adjustedQuery);
 
