@@ -42,7 +42,7 @@ module.exports = {
     const endTime = currentTime + timeOutInMin * 60;
     const formattedStartTime = `<t:${currentTime}:F>`;
     const formattedEndTime = `<t:${endTime}:R>`;
-    console.log(currentTime +", "+endTime);
+    console.log(currentTime + ", " + endTime);
 
     var joinLabel = "Join stack";
 
@@ -88,7 +88,7 @@ module.exports = {
             content: `Thanks for clicking! I'll notify you if/when a stack forms`,
             ephemeral: true,
           });
-          let replyMessage = `So far the following ${usernameArray.length()} people have said they will play: `;
+          let replyMessage = `So far the following ${usernameArray.length} people have said they will play: `;
           for (let i = 0; i < usernameArray.length; i++) {
             replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           }
@@ -120,7 +120,7 @@ module.exports = {
             content: `Please don't go.`,
             ephemeral: true,
           });
-          let replyMessage = `So far the following ${usernameArray.length()} people have said they will play: `;
+          let replyMessage = `So far the following ${usernameArray.length} people have said they will play: `;
           for (let i = 0; i < usernameArray.length; i++) {
             replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           }
