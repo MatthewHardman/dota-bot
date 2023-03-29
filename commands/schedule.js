@@ -31,22 +31,24 @@ module.exports = {
   async execute(interaction) {
     let stackSize = interaction.options.getInteger("stacksize");
 
-    //const query = interaction.options.getString("query");
+    //declare and calculate all the timezone stuff
     const timeZoneOffset = interaction.options.getInteger("timezone");
-    const timeInput = parseInt(interaction.options.getString("time"))+timeZoneOffset*100;
+    const timeInput = interaction.options.getString("time");
+    const standardizedTime = (parseInt(timeInput)+timeZoneOffset*100).toString();
 
     console.log("Requested time: "+interaction.options.getString("time"));
     console.log("Adjusted for GMT: "+timeInput);
 
-    if (!/^\d{4}$/.test(timeInput)) {
+
+    if (!/^\d{4}$/.test(standardizedTime)) {
       await interaction.reply(
         "Invalid time format. Please provide a 4-digit time in 24-hour format, e.g., 1430 for 14:30."
       );
       return;
     }
 
-    const scheduledHour = parseInt(timeInput.slice(0, 2));
-    const scheduledMinute = parseInt(timeInput.slice(2));
+    const scheduledHour = parseInt(standardizedTime.slice(0, 2));
+    const scheduledMinute = parseInt(standardizedTime.slice(2));
 
     const now = new Date();
     const scheduledTime = new Date(now);
@@ -58,6 +60,8 @@ module.exports = {
       );
       return;
     }
+
+    const rawScheduledTime = Date.parse(scheduledTime)/1000;
 
     const role = interaction.guild.roles.cache.find(
       (role) => role.name.toLowerCase() === "dooters"
@@ -71,7 +75,7 @@ module.exports = {
     }
 
     const message = await interaction.reply({
-      content: `A Dota game has been scheduled for ${scheduledTime.toLocaleString()} (${timezoneString}) with a stack size of ${stackSize}. React with 👍 if you want to join.`,
+      content: `A Dota game has been scheduled for <t:${rawScheduledTime}:R> with a stack size of ${stackSize}. React with 👍 if you want to join.`,
       fetchReply: true,
       ephemeral: false,
     });
@@ -123,41 +127,3 @@ module.exports = {
     }, scheduledTime - now);
   },
 };
-
-
-// function adjustScheduledTime(query, timeZoneOffset) {
-//   const timeRegex = /(\d{1,2}:\d{2}\s?(?:[AP]M)?)/gi;
-//   const timeMatches = query.match(timeRegex);
-
-//   if (timeMatches) {
-//     timeMatches.forEach((time) => {
-//       const adjustedTime = adjustTime(time, timeZoneOffset);
-//       query = query.replace(time, adjustedTime);
-//     });
-//   }
-
-//   return query;
-// }
-
-// function adjustTime(time, timeZoneOffset) {
-//   const isAMPM = /(?:[AP]M)?/i.test(time);
-//   let [hours, minutes] = time.replace(/(?:[AP]M)?/i, "").split(":");
-
-//   hours = parseInt(hours, 10) + timeZoneOffset;
-//   if (isAMPM) {
-//     if (hours < 1) {
-//       hours += 12;
-//     } else if (hours > 12) {
-//       hours -= 12;
-//     }
-//   } else {
-//     if (hours < 0) {
-//       hours += 24;
-//     } else if (hours > 23) {
-//       hours -= 24;
-//     }
-//   }
-
-//   return `${hours}:${minutes}${isAMPM ? (hours >= 12 ? " PM" : " AM") : ""}`;
-// }
-
