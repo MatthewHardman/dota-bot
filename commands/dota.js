@@ -84,9 +84,9 @@ module.exports = {
             content: `Thanks for clicking! I'll notify you if/when a stack forms`,
             ephemeral: true,
           });
-          let replyMessage = `So far the following people have said they will play: `;
+          let replyMessage = `So far the following ${usernameArray.length()} people have said they will play: `;
           for (let i = 0; i < usernameArray.length; i++) {
-            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}>`);
+            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           }
           message.edit(
             `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
@@ -116,9 +116,9 @@ module.exports = {
             content: `Please don't go.`,
             ephemeral: true,
           });
-          let replyMessage = `So far the following people have said they will play: `;
+          let replyMessage = `So far the following ${usernameArray.length()} people have said they will play: `;
           for (let i = 0; i < usernameArray.length; i++) {
-            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}>`);
+            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           }
           message.edit(
             `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
