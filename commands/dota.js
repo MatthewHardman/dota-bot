@@ -44,15 +44,12 @@ module.exports = {
     const formattedEndTime = `<t:${endTime}:R>`;
     console.log(currentTime +", "+endTime);
 
+    var joinLabel = "Join stack";
+
     // just attempting to add a button that does nothing yet, adding more comments to force a deploy
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
-      .setLabel(
-        {if (idArray.includes(i.user.id)) {
-          "You're in the stack!"
-        } elese {
-          "Join stack"
-        }})
+      .setLabel(joinLabel);
       .setStyle(ButtonStyle.Primary);
     //.setEmoji(reactionEmoji);
 
@@ -84,6 +81,7 @@ module.exports = {
     collector.on("collect", (i) => {
       if (i.customId == "join_dota") {
         if (!idArray.includes(i.user.id)) {
+          joinLabel = "You're in the stack!";
           idArray.push(i.user.id);
           usernameArray.push(i.user.username);
           i.reply({
