@@ -47,7 +47,12 @@ module.exports = {
     // just attempting to add a button that does nothing yet, adding more comments to force a deploy
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
-      .setLabel("Click Here to Play")
+      .setLabel(
+        if (!idArray.includes(i.user.id)) {
+          "You're in the stack!"
+        } elese {
+          "Join stack"
+        })
       .setStyle(ButtonStyle.Primary);
     //.setEmoji(reactionEmoji);
 
@@ -60,7 +65,7 @@ module.exports = {
 
     const message = await interaction.reply({
       content:
-        `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. \n*(` +
+        `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please click below if you'd like to be pinged when a stack forms. \n*(` +
         interaction.user.username +
         `, I have reacted for you. But not anymore cuz its a button but you don't have to click it.)*`,
       fetchReply: true,
