@@ -42,6 +42,7 @@ module.exports = {
     const endTime = currentTime + timeOutInMin * 60;
     const formattedStartTime = `<t:${currentTime}:F>`;
     const formattedEndTime = `<t:${endTime}:R>`;
+    console.log(currentTime +", "+endTime);
 
     // just attempting to add a button that does nothing yet, adding more comments to force a deploy
     const joinButton = new ButtonBuilder()
