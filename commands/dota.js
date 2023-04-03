@@ -98,7 +98,12 @@ module.exports = {
     collector.on("collect", (i) => {
       //first we handle the join button
       if (i.customId == "join_dota") {
-        if (!idArray.includes(i.user.id)) {
+        if(i.user == interaction.user) {
+          i.reply({
+            content: replyJoinOwner,
+            ephemeral: true,
+          });
+        } else if (!idArray.includes(i.user.id)) {
           idArray.push(i.user.id);
           usernameArray.push(i.user.username);
           i.reply({
@@ -106,6 +111,7 @@ module.exports = {
             ephemeral: true,
           });
 
+          //set the reply message to the base message before appending the list of users to it
           replyMessage = replyPlayingListBase;
           
           for (let i = 0; i < usernameArray.length; i++) {
@@ -114,11 +120,6 @@ module.exports = {
           message.edit(
             `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
           );
-        } else if (i.user == interaction.user) {
-          i.reply({
-            content: replyJoinOwner,
-            ephemeral: true,
-          });
         } else if (idArray.includes(i.user.id)) {
           i.reply({
             content: replyAlreadyJoined,
@@ -131,24 +132,24 @@ module.exports = {
       }
       //and the code to handle clicking the leave button
       if (i.customId == "leave_dota") {
-        if (idArray.includes(i.user.id)) {
+        
+        //we don't let the stack creator bail on the stack
+        if (i.user == interaction.user) {
+          i.reply({
+            content: replyLeaveOwner,
+            ephemeral: true,
+          });
+        } else if (idArray.includes(i.user.id)) {
+
           let index = idArray.indexOf(i.user.id);
           idArray.splice(index, 1);
           index = usernameArray.indexOf(i.user.username);
-
-          //we don't let the stack creator bail on the stack
-          if(i.user == interaction.user) {
-            i.reply({
-              content: replyLeaveOwner,
-              ephemeral: true,
-            });
-          } else {
-            usernameArray.splice(index, 1);
-            i.reply({
-              content: replyLeaveSad,
-              ephemeral: true,
-            });
-          }
+          usernameArray.splice(index, 1);
+          i.reply({
+            content: replyLeaveSad,
+            ephemeral: true,
+          });
+        }
 
           replyMessage = replyPlayingListBase;
           
