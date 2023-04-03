@@ -104,7 +104,7 @@ module.exports = {
             ephemeral: true,
           });
 
-          replyMessage = replyPlayingListContent;
+          replyMessage = replyPlayingListBase;
           
           for (let i = 0; i < usernameArray.length; i++) {
             replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
@@ -129,7 +129,7 @@ module.exports = {
       }
       if (i.customId == "leave_dota") {
         if (idArray.includes(i.user.id)) {
-          index = idArray.indexOf(i.user.id);
+          let index = idArray.indexOf(i.user.id);
           idArray.splice(index, 1);
           index = usernameArray.indexOf(i.user.username);
           usernameArray.splice(index, 1);
