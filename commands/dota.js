@@ -42,7 +42,7 @@ module.exports = {
     const endTime = currentTime + timeOutInMin * 60;
     //const formattedStartTime = `<t:${currentTime}:F>`;
     const formattedEndTime = `<t:${endTime}:R>`;
-    console.log(currentTime + ", " + endTime);
+    console.log("Stack requested by" + interaction.user.username +" for " + formattedEndTime);
 
     var joinLabel = "Join stack";
     var leaveLabel = "Leave the stack"
@@ -89,6 +89,7 @@ module.exports = {
     let replyAlreadyJoined = `Don't be greedy, you've already clicked once.`;
 
     //Leave button responses
+    let replyLeaveOwner = `Uh, no, you aren't allowed to leave your own party.`
     let replyLeaveNotJoined = `You haven't even said you could play yet!`;
     let replyStackTimeout = `Not enough for a stack right now. Try again later!`;
     let replyLeaveSad = `Please, don't go.`;
