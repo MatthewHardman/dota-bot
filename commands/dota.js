@@ -40,11 +40,12 @@ module.exports = {
     */
     const currentTime = Math.floor(Date.now() / 1000);
     const endTime = currentTime + timeOutInMin * 60;
-    const formattedStartTime = `<t:${currentTime}:F>`;
+    //const formattedStartTime = `<t:${currentTime}:F>`;
     const formattedEndTime = `<t:${endTime}:R>`;
     console.log(currentTime + ", " + endTime);
 
     var joinLabel = "Join stack";
+    var leaveLabel = "Leave the stack"
 
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
@@ -53,7 +54,7 @@ module.exports = {
 
     const leaveButton = new ButtonBuilder()
       .setCustomId("leave_dota")
-      .setLabel("Click here if you can't play anymore")
+      .setLabel(leaveLabel)
       .setStyle(ButtonStyle.Danger);
 
     const row = new ActionRowBuilder().addComponents(joinButton, leaveButton);
@@ -74,22 +75,36 @@ module.exports = {
 
     let idArray = [];
     let usernameArray = [];
+    let replyMessage = '';
     idArray.push(interaction.user.id);
-    let replyMessage = `So far the following ${usernameArray.length} people have said they will play: \n - ${interaction.user.username}`;
 
+    //Declarring various content variables
+    //Base messages
+    let replyPlayingListBase = `So far the following ${usernameArray.length} people have said they will play: \n - ${interaction.user.username}`;
+    let replyStackSuccess = `It's time to play!`;
+
+    //Join button responses
+    let replyJoinThanks = `Thanks for clicking! I'll notify you if/when a stack forms`;
+    let replyJoinOwner = `I told you that you didn't have to click on it, dummy.`;
+    let replyAlreadyJoined = `Don't be greedy, you've already clicked once.`;
+
+    //Leave button responses
+    let replyLeaveNotJoined = `You haven't even said you could play yet!`;
+    let replyStackTimeout = `Not enough for a stack right now. Try again later!`;
+    let replyLeaveSad = `Please, don't go.`;
+
+    //Button collector functions
     collector.on("collect", (i) => {
       if (i.customId == "join_dota") {
         if (!idArray.includes(i.user.id)) {
-          joinLabel = "You're in the stack!";
           idArray.push(i.user.id);
           usernameArray.push(i.user.username);
           i.reply({
-            content: `Thanks for clicking! I'll notify you if/when a stack forms`,
+            content: replyJoinThanks,
             ephemeral: true,
           });
 
-          //commenting this out to consolidate our variable declarations
-          //let replyMessage = `So far the following ${usernameArray.length} people have said they will play: \n - ${interaction.user.username}`;
+          replyMessage = replyPlayingListContent;
           
           for (let i = 0; i < usernameArray.length; i++) {
             replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
@@ -99,12 +114,12 @@ module.exports = {
           );
         } else if (i.user == interaction.user) {
           i.reply({
-            content: `I told you that you didn't have to click on it, dummy.`,
+            content: replyJoinOwner,
             ephemeral: true,
           });
         } else if (idArray.includes(i.user.id)) {
           i.reply({
-            content: `Don't be greedy, you've already clicked once.`,
+            content: replyAlreadyJoined,
             ephemeral: true,
           });
         }
@@ -119,12 +134,12 @@ module.exports = {
           index = usernameArray.indexOf(i.user.username);
           usernameArray.splice(index, 1);
           i.reply({
-            content: `Please don't go.`,
+            content: replyLeaveSad,
             ephemeral: true,
           });
 
-          //commenting this out to consolidate our variable declarations
-          //let replyMessage = `So far the following ${usernameArray.length} people have said they will play: `;
+          
+          replyMessage = replyPlayingListBase;
           
           for (let i = 0; i < usernameArray.length; i++) {
             replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
@@ -134,7 +149,7 @@ module.exports = {
           );
         } else {
           i.reply({
-            content: `You haven't even said you could play yet!`,
+            content: replyLeaveNotJoined,
             ephemeral: true,
           });
         }
@@ -144,7 +159,7 @@ module.exports = {
     collector.on("end", (collected) => {
       if (idArray.length == stackSize) {
         
-        let replyMessage = `It's time to play!`;
+        replyMessage = replyStackSuccess;
         for (let i = 0; i < idArray.length; i++) {
           replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
         }
@@ -158,12 +173,12 @@ module.exports = {
         });
       } else {
 
-        let replyMessage = `*The stack didn't form in time for ${interaction.user.username}.  However, the following people might still be interested in playing:*`;
+        replyMessage = `*The stack didn't form in time for ${interaction.user.username}.  However, the following people might still be interested in playing:*`;
         for (let i = 0; i < idArray.length; i++) {
           replyMessage = replyMessage.concat(`\n - `, `<@${usernameArray[i]}>`);
         }
 
-        message.reply("Not enough for a stack right now. Try again later!");
+        message.reply(replyStackTimeout);
         message.edit({
           content: replyMessage,
           components: [],
