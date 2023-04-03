@@ -46,12 +46,10 @@ module.exports = {
 
     var joinLabel = "Join stack";
 
-    // just attempting to add a button that does nothing yet, adding more comments to force a deploy
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
       .setLabel(joinLabel)
       .setStyle(ButtonStyle.Primary);
-    //.setEmoji(reactionEmoji);
 
     const leaveButton = new ButtonBuilder()
       .setCustomId("leave_dota")
