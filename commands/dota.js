@@ -30,6 +30,7 @@ module.exports = {
     let stackSize = interaction.options.getInteger("stacksize");
     let timeOutInMin = interaction.options.getInteger("timeout");
     let timeOutInMS = timeOutInMin * 60000;
+    let owner = interaction.user;
     const role = interaction.guild.roles.cache.find(
       (role) => role.id === "1071259658943217745"
     );
@@ -42,7 +43,9 @@ module.exports = {
     const endTime = currentTime + timeOutInMin * 60;
     //const formattedStartTime = `<t:${currentTime}:F>`;
     const formattedEndTime = `<t:${endTime}:R>`;
-    console.log("Stack requested by " + interaction.user.username +" for " + endTime);
+    const absoluteEndTime = `<t:${endTime}:t>`;
+    console.log("Stack requested by " + owner.username +" for " + endTime);
+    const stackSizeText = (stackSize >= 5) ? stackSize : stackSize + ' or more';
 
     var joinLabel = "Join stack";
     var leaveLabel = "Leave the stack"
@@ -61,8 +64,8 @@ module.exports = {
 
     const message = await interaction.reply({
       content:
-        `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please click below if you'd like to be pinged when a stack forms. \n*(` +
-        interaction.user.username +
+        `Hello <@&${role.id}>, **${owner.username}** would like to play with a **stack of ${stackSizeText}** ${formattedEndTime}! Please click below if you'd like to be pinged when a stack forms. \n*(` +
+        owner.username +
         `, I have reacted for you. But not anymore cuz its a button but you don't have to click it.)*`,
       fetchReply: true,
       components: [row],
@@ -76,11 +79,11 @@ module.exports = {
     let idArray = [];
     let usernameArray = [];
     let replyMessage = '';
-    idArray.push(interaction.user.id);
+    idArray.push(owner.id);
 
     //Declarring various content variables
     //Base messages
-    let replyPlayingListBase = `So far the following ${usernameArray.length} people have said they will play: \n - ${interaction.user.username}`;
+    let replyPlayingListBase = `So far the following ${usernameArray.length} people have said they will play: \n - ${owner.username}`;
     let replyStackSuccess = `It's time to play!`;
 
     //Join button responses
@@ -97,15 +100,16 @@ module.exports = {
     //Button collector functions
     collector.on("collect", (i) => {
       //first we handle the join button
+      let currentUser = i.user;
       if (i.customId == "join_dota") {
-        if(i.user == interaction.user) {
+        if(currentUser == owner) {
           i.reply({
             content: replyJoinOwner,
             ephemeral: true,
           });
-        } else if (!idArray.includes(i.user.id)) {
-          idArray.push(i.user.id);
-          usernameArray.push(i.user.username);
+        } else if (!idArray.includes(currentUser.id)) {
+          idArray.push(currentUser.id);
+          usernameArray.push(currentUser.username);
           i.reply({
             content: replyJoinThanks,
             ephemeral: true,
@@ -118,9 +122,9 @@ module.exports = {
             replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
           }
           message.edit(
-            `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
+            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms. ${replyMessage}`
           );
-        } else if (idArray.includes(i.user.id)) {
+        } else if (idArray.includes(currentUser.id)) {
           i.reply({
             content: replyAlreadyJoined,
             ephemeral: true,
@@ -134,7 +138,7 @@ module.exports = {
       if (i.customId == "leave_dota") {
         
         //we don't let the stack creator bail on the stack
-        if (i.user == interaction.user) {
+        if (i.user == owner) {
           i.reply({
             content: replyLeaveOwner,
             ephemeral: true,
@@ -156,7 +160,7 @@ module.exports = {
             replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           }
           message.edit(
-            `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
+            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Click "Join" if you'd like to be pinged when a stack forms. ${replyMessage}`
           );
         } else {
           i.reply({
@@ -179,14 +183,14 @@ module.exports = {
         const formedTime = Math.floor(Date.now() / 1000);
 
         message.edit({
-          content: `*The stack of ${stackSize} requested by ${interaction.user.username} formed <t:${formedTime}:R>.*`,
+          content: `*The stack of ${stackSize} requested by ${owner.username} formed <t:${formedTime}:R>.*`,
           components: [],
         });
       } else {
 
-        replyMessage = `*The stack didn't form in time for ${interaction.user.username}.  However, the following people might still be interested in playing:*`;
+        replyMessage = `*The stack didn't form in time for ${owner.username}.  However, the following people might still be interested in playing:*`;
         for (let i = 0; i < idArray.length; i++) {
-          replyMessage = replyMessage.concat(`\n - `, `<@${usernameArray[i]}>`);
+          replyMessage = replyMessage.concat(`\n - `, `<@${idArray[i]}>`);
         }
 
         message.reply(replyStackTimeout);
