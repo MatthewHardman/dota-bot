@@ -75,6 +75,7 @@ module.exports = {
     let idArray = [];
     let usernameArray = [];
     idArray.push(interaction.user.id);
+    let replyMessage = `So far the following ${usernameArray.length} people have said they will play: \n - ${interaction.user.username}`;
 
     collector.on("collect", (i) => {
       if (i.customId == "join_dota") {
@@ -86,9 +87,12 @@ module.exports = {
             content: `Thanks for clicking! I'll notify you if/when a stack forms`,
             ephemeral: true,
           });
-          let replyMessage = `So far the following ${usernameArray.length} people have said they will play: `;
+
+          //commenting this out to consolidate our variable declarations
+          //let replyMessage = `So far the following ${usernameArray.length} people have said they will play: \n - ${interaction.user.username}`;
+          
           for (let i = 0; i < usernameArray.length; i++) {
-            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
+            replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
           }
           message.edit(
             `Hello <@&${role.id}>, **${interaction.user.username}** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Please react if you'd like to be pinged when a stack forms. ${replyMessage}`
@@ -100,7 +104,7 @@ module.exports = {
           });
         } else if (idArray.includes(i.user.id)) {
           i.reply({
-            content: `Dont' be greedy, you've already clicked once.`,
+            content: `Don't be greedy, you've already clicked once.`,
             ephemeral: true,
           });
         }
@@ -118,7 +122,10 @@ module.exports = {
             content: `Please don't go.`,
             ephemeral: true,
           });
-          let replyMessage = `So far the following ${usernameArray.length} people have said they will play: `;
+
+          //commenting this out to consolidate our variable declarations
+          //let replyMessage = `So far the following ${usernameArray.length} people have said they will play: `;
+          
           for (let i = 0; i < usernameArray.length; i++) {
             replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           }
@@ -136,6 +143,7 @@ module.exports = {
 
     collector.on("end", (collected) => {
       if (idArray.length == stackSize) {
+        
         let replyMessage = `It's time to play!`;
         for (let i = 0; i < idArray.length; i++) {
           replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
@@ -149,9 +157,15 @@ module.exports = {
           components: [],
         });
       } else {
+
+        let replyMessage = `*The stack didn't form in time for ${interaction.user.username}.  However, the following people might still be interested in playing:*`;
+        for (let i = 0; i < idArray.length; i++) {
+          replyMessage = replyMessage.concat(`\n - `, `<@${idArray[i]}>`);
+        }
+
         message.reply("Not enough for a stack right now. Try again later!");
         message.edit({
-          content: `*The stack didn't form in time for ${interaction.user.username}.*`,
+          content: replyMessage,
           components: [],
         });
       }
