@@ -83,7 +83,7 @@ module.exports = {
 
     //Declarring various content variables
     //Base messages
-    let replyPlayingListBase = `So far the following ${usernameArray.length} people have said they will play: \n - ${owner.username}`;
+    let replyPlayingListBase = ``;
     let replyStackSuccess = `It's time to play!`;
 
     //Join button responses
@@ -96,6 +96,12 @@ module.exports = {
     let replyLeaveNotJoined = `You haven't even said you could play yet!`;
     let replyStackTimeout = `Not enough for a stack right now. Try again later!`;
     let replyLeaveSad = `Please, don't go.`;
+
+    function buildReplyList() {
+      replyPlayingListBase = `So far the following ${usernameArray.length} people have said they will play: \n - ${owner.username}`;
+
+      return replyPlayingListBase;
+    }
 
     //Button collector functions
     collector.on("collect", (i) => {
@@ -122,7 +128,7 @@ module.exports = {
             replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
           }
           message.edit(
-            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms. ${replyMessage}`
+            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms. ` + buildReplyList();
           );
         } else if (idArray.includes(currentUser.id)) {
           i.reply({
@@ -160,7 +166,7 @@ module.exports = {
             replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           }
           message.edit(
-            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** ${formattedEndTime}! Click "Join" if you'd like to be pinged when a stack forms. ${replyMessage}`
+            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms. ` + buildReplyList();
           );
         } else {
           i.reply({
