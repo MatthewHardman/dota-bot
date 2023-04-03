@@ -122,13 +122,14 @@ module.exports = {
           });
 
           //set the reply message to the base message before appending the list of users to it
-          replyMessage = replyPlayingListBase;
+          buildReplyList()
           
           for (let i = 0; i < usernameArray.length; i++) {
             replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
           }
+          let fullReplyMessage = `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.` + replyMessage
           message.edit(
-            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.  ${buildReplyList()}`;
+            fullReplyMessage
           );
         } else if (idArray.includes(currentUser.id)) {
           i.reply({
@@ -160,13 +161,15 @@ module.exports = {
             ephemeral: true,
           });
 
-          replyMessage = replyPlayingListBase;
+          //set the reply message to the base message before appending the list of users to it
+          buildReplyList()
           
           for (let i = 0; i < usernameArray.length; i++) {
             replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           }
+          let fullReplyMessage = `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.` + replyMessage
           message.edit(
-            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms. ` + buildReplyList();
+            fullReplyMessage
           );
         } else {
           i.reply({
