@@ -128,7 +128,7 @@ module.exports = {
             replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
           }
           message.edit(
-            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms. ` + buildReplyList();
+            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.  ${buildReplyList()}`;
           );
         } else if (idArray.includes(currentUser.id)) {
           i.reply({
