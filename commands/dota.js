@@ -98,7 +98,7 @@ module.exports = {
     let replyLeaveSad = `Please, don't go.`;
 
     function buildReplyList() {
-      replyPlayingListBase = `So far the following ${usernameArray.length} people have said they will play: \n - ${owner.username}`;
+      replyPlayingListBase = `\nSo far the following ${idArray.length} people have said they will play: \n - ${owner.username}`;
       let buildingReply = replyPlayingListBase;
 
       for (let i = 0; i < usernameArray.length; i++) {
