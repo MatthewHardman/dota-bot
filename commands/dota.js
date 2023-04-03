@@ -42,7 +42,7 @@ module.exports = {
     const endTime = currentTime + timeOutInMin * 60;
     //const formattedStartTime = `<t:${currentTime}:F>`;
     const formattedEndTime = `<t:${endTime}:R>`;
-    console.log("Stack requested by" + interaction.user.username +" for " + formattedEndTime);
+    console.log("Stack requested by " + interaction.user.username +" for " + endTime);
 
     var joinLabel = "Join stack";
     var leaveLabel = "Leave the stack"
@@ -149,7 +149,6 @@ module.exports = {
             content: replyLeaveSad,
             ephemeral: true,
           });
-        }
 
           replyMessage = replyPlayingListBase;
           
