@@ -99,8 +99,13 @@ module.exports = {
 
     function buildReplyList() {
       replyPlayingListBase = `So far the following ${usernameArray.length} people have said they will play: \n - ${owner.username}`;
+      let buildingReply = replyPlayingListBase;
 
-      return replyPlayingListBase;
+      for (let i = 0; i < usernameArray.length; i++) {
+        buildingReply = buildingReply.concat(`\n - `, `${usernameArray[i]}`);
+      }
+
+      return buildingReply;
     }
 
     //Button collector functions
@@ -114,6 +119,7 @@ module.exports = {
             ephemeral: true,
           });
         } else if (!idArray.includes(currentUser.id)) {
+          console.log(`Adding ${currentUser.username} to list`);
           idArray.push(currentUser.id);
           usernameArray.push(currentUser.username);
           i.reply({
@@ -122,11 +128,11 @@ module.exports = {
           });
 
           //set the reply message to the base message before appending the list of users to it
-          buildReplyList()
+          replyMessage = buildReplyList()
           
-          for (let i = 0; i < usernameArray.length; i++) {
-            replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
-          }
+          // for (let i = 0; i < usernameArray.length; i++) {
+          //   replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
+          // }
           let fullReplyMessage = `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.` + replyMessage
           message.edit(
             fullReplyMessage
@@ -145,16 +151,17 @@ module.exports = {
       if (i.customId == "leave_dota") {
         
         //we don't let the stack creator bail on the stack
-        if (i.user == owner) {
+        if (currentUser == owner) {
           i.reply({
             content: replyLeaveOwner,
             ephemeral: true,
           });
-        } else if (idArray.includes(i.user.id)) {
+        } else if (idArray.includes(currentUser.id)) {
+          console.log(`Removing ${currentUser.username} from list`);
 
-          let index = idArray.indexOf(i.user.id);
+          let index = idArray.indexOf(currentUser.id);
           idArray.splice(index, 1);
-          index = usernameArray.indexOf(i.user.username);
+          index = usernameArray.indexOf(currentUser.username);
           usernameArray.splice(index, 1);
           i.reply({
             content: replyLeaveSad,
@@ -162,11 +169,11 @@ module.exports = {
           });
 
           //set the reply message to the base message before appending the list of users to it
-          buildReplyList()
+          replyMessage = buildReplyList();
           
-          for (let i = 0; i < usernameArray.length; i++) {
-            replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
-          }
+          // for (let i = 0; i < usernameArray.length; i++) {
+          //   replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
+          // }
           let fullReplyMessage = `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.` + replyMessage
           message.edit(
             fullReplyMessage
