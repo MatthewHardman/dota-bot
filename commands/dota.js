@@ -160,7 +160,7 @@ module.exports = {
 
         let replyMessage = `*The stack didn't form in time for ${interaction.user.username}.  However, the following people might still be interested in playing:*`;
         for (let i = 0; i < idArray.length; i++) {
-          replyMessage = replyMessage.concat(`\n - `, `<@${idArray[i]}>`);
+          replyMessage = replyMessage.concat(`\n - `, `<@${usernameArray[i]}>`);
         }
 
         message.reply("Not enough for a stack right now. Try again later!");
