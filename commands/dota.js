@@ -95,6 +95,7 @@ module.exports = {
 
     //Button collector functions
     collector.on("collect", (i) => {
+      //first we handle the join button
       if (i.customId == "join_dota") {
         if (!idArray.includes(i.user.id)) {
           idArray.push(i.user.id);
@@ -127,18 +128,27 @@ module.exports = {
           collector.stop();
         }
       }
+      //and the code to handle clicking the leave button
       if (i.customId == "leave_dota") {
         if (idArray.includes(i.user.id)) {
           let index = idArray.indexOf(i.user.id);
           idArray.splice(index, 1);
           index = usernameArray.indexOf(i.user.username);
-          usernameArray.splice(index, 1);
-          i.reply({
-            content: replyLeaveSad,
-            ephemeral: true,
-          });
 
-          
+          //we don't let the stack creator bail on the stack
+          if(i.user == interaction.user) {
+            i.reply({
+              content: replyLeaveOwner,
+              ephemeral: true,
+            });
+          } else {
+            usernameArray.splice(index, 1);
+            i.reply({
+              content: replyLeaveSad,
+              ephemeral: true,
+            });
+          }
+
           replyMessage = replyPlayingListBase;
           
           for (let i = 0; i < usernameArray.length; i++) {
