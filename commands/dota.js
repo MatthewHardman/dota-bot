@@ -222,12 +222,12 @@ module.exports = {
       } else {
         replyMessage = `*The stack didn't form in time for ${owner.username}.  However, the following people might still be interested in playing:*`;
         for (let i = 0; i < idArray.length; i++) {
-          replyMessage = replyMessage.concat(`\n - `, `<@${idArray[i]}>`);
+          replyMessage = replyMessage.concat(`\n - `, `${idArray[i]}`);
         }
 
         message.reply(replyMessage);
         message.edit({
-          content: replyMessage,
+          content: replyStackTimeout,
           components: [],
         });
       }
