@@ -225,7 +225,7 @@ module.exports = {
           replyMessage = replyMessage.concat(`\n - `, `<@${idArray[i]}>`);
         }
 
-        message.reply(replyStackTimeout);
+        message.reply(replyMessage);
         message.edit({
           content: replyMessage,
           components: [],
