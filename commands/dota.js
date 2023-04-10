@@ -44,11 +44,11 @@ module.exports = {
     //const formattedStartTime = `<t:${currentTime}:F>`;
     const formattedEndTime = `<t:${endTime}:R>`;
     const absoluteEndTime = `<t:${endTime}:t>`;
-    console.log("Stack requested by " + owner.username +" for " + endTime);
-    const stackSizeText = (stackSize >= 5) ? stackSize : stackSize + ' or more';
+    console.log("Stack requested by " + owner.username + " for " + endTime);
+    const stackSizeText = stackSize >= 5 ? stackSize : stackSize + " or more";
 
     var joinLabel = "Join stack";
-    var leaveLabel = "Leave the stack"
+    var leaveLabel = "Leave the stack";
 
     const joinButton = new ButtonBuilder()
       .setCustomId("join_dota")
@@ -78,7 +78,7 @@ module.exports = {
 
     let idArray = [];
     let usernameArray = [];
-    let replyMessage = '';
+    let replyMessage = "";
     idArray.push(owner.id);
 
     //Declarring various content variables
@@ -89,10 +89,14 @@ module.exports = {
     //Join button responses
     let replyJoinThanks = `Thanks for clicking! I'll notify you if/when a stack forms`;
     let replyJoinOwner = `I told you that you didn't have to click on it, dummy.`;
-    let replyAlreadyJoined = `Don't be greedy, you've already clicked once.`;
+    let replyAlreadyJoined = [
+      `Don't be greedy, you've already clicked once.`,
+      `Clicking it more won't make people join faster`,
+      `Clicking buttons is fun!`,
+    ];
 
     //Leave button responses
-    let replyLeaveOwner = `Uh, no, you aren't allowed to leave your own party.`
+    let replyLeaveOwner = `Uh, no, you aren't allowed to leave your own party.`;
     let replyLeaveNotJoined = `You haven't even said you could play yet!`;
     let replyStackTimeout = `Not enough for a stack right now. Try again later!`;
     let replyLeaveSad = `Please, don't go.`;
@@ -113,7 +117,7 @@ module.exports = {
       //first we handle the join button
       let currentUser = i.user;
       if (i.customId == "join_dota") {
-        if(currentUser == owner) {
+        if (currentUser == owner) {
           i.reply({
             content: replyJoinOwner,
             ephemeral: true,
@@ -128,18 +132,21 @@ module.exports = {
           });
 
           //set the reply message to the base message before appending the list of users to it
-          replyMessage = buildReplyList()
-          
+          replyMessage = buildReplyList();
+
           // for (let i = 0; i < usernameArray.length; i++) {
           //   replyMessage = replyMessage.concat(`\n - `, `${usernameArray[i]}`);
           // }
-          let fullReplyMessage = `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.` + replyMessage
-          message.edit(
-            fullReplyMessage
-          );
+          let fullReplyMessage =
+            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.` +
+            replyMessage;
+          message.edit(fullReplyMessage);
         } else if (idArray.includes(currentUser.id)) {
           i.reply({
-            content: replyAlreadyJoined,
+            content:
+              replyAlreadyJoined[
+                Math.floor(Math.random() * replyAlreadyJoined.length)
+              ],
             ephemeral: true,
           });
         }
@@ -149,7 +156,6 @@ module.exports = {
       }
       //and the code to handle clicking the leave button
       if (i.customId == "leave_dota") {
-        
         //we don't let the stack creator bail on the stack
         if (currentUser == owner) {
           i.reply({
@@ -170,14 +176,14 @@ module.exports = {
 
           //set the reply message to the base message before appending the list of users to it
           replyMessage = buildReplyList();
-          
+
           // for (let i = 0; i < usernameArray.length; i++) {
           //   replyMessage = replyMessage.concat(` `, `${usernameArray[i]}`);
           // }
-          let fullReplyMessage = `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.` + replyMessage
-          message.edit(
-            fullReplyMessage
-          );
+          let fullReplyMessage =
+            `Hello <@&${role.id}>, **<@${owner.id}>** would like to play with a **stack of ${stackSize}** before ${absoluteEndTime} (${formattedEndTime})! Click "Join" if you'd like to be pinged when a stack forms.` +
+            replyMessage;
+          message.edit(fullReplyMessage);
         } else {
           i.reply({
             content: replyLeaveNotJoined,
@@ -189,7 +195,6 @@ module.exports = {
 
     collector.on("end", (collected) => {
       if (idArray.length == stackSize) {
-        
         replyMessage = replyStackSuccess;
         for (let i = 0; i < idArray.length; i++) {
           replyMessage = replyMessage.concat(` `, `<@${idArray[i]}>`);
@@ -203,7 +208,6 @@ module.exports = {
           components: [],
         });
       } else {
-
         replyMessage = `*The stack didn't form in time for ${owner.username}.  However, the following people might still be interested in playing:*`;
         for (let i = 0; i < idArray.length; i++) {
           replyMessage = replyMessage.concat(`\n - `, `<@${idArray[i]}>`);
