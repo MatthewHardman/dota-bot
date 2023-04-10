@@ -66,7 +66,7 @@ module.exports = {
       content:
         `Hello <@&${role.id}>, **${owner.username}** would like to play with a **stack of ${stackSizeText}** ${formattedEndTime}! Please click below if you'd like to be pinged when a stack forms. \n*(` +
         owner.username +
-        `, I have reacted for you. But not anymore cuz its a button but you don't have to click it.)*`,
+        `, You do not have to click the button.)*`,
       fetchReply: true,
       components: [row],
     });
@@ -91,15 +91,23 @@ module.exports = {
     let replyJoinOwner = `I told you that you didn't have to click on it, dummy.`;
     let replyAlreadyJoined = [
       `Don't be greedy, you've already clicked once.`,
-      `Clicking it more won't make people join faster`,
+      `Clicking it more won't make people join faster.`,
       `Clicking buttons is fun!`,
     ];
 
     //Leave button responses
     let replyLeaveOwner = `Uh, no, you aren't allowed to leave your own party.`;
-    let replyLeaveNotJoined = `You haven't even said you could play yet!`;
+    let replyLeaveNotJoined = [
+      `You haven't even said you could play yet!`,
+      `You can't leave a stack you haven't joined.`,
+      `ಠ_ಠ`,
+    ];
     let replyStackTimeout = `Not enough for a stack right now. Try again later!`;
-    let replyLeaveSad = `Please, don't go.`;
+    let replyLeaveSad = [
+      `Please, don't go.`,
+      `I didn't want to play with you anyway`,
+      `♫ Okay, byyyeeee ♫`,
+    ];
 
     function buildReplyList() {
       replyPlayingListBase = `\nSo far the following ${idArray.length} people have said they will play: \n - ${owner.username}`;
@@ -170,7 +178,8 @@ module.exports = {
           index = usernameArray.indexOf(currentUser.username);
           usernameArray.splice(index, 1);
           i.reply({
-            content: replyLeaveSad,
+            content:
+              replyLeaveSad[Math.floor(Math.random() * replyLeaveSad.length)],
             ephemeral: true,
           });
 
@@ -186,7 +195,10 @@ module.exports = {
           message.edit(fullReplyMessage);
         } else {
           i.reply({
-            content: replyLeaveNotJoined,
+            content:
+              replyLeaveNotJoined[
+                Math.floor(Math.random() * replyLeaveNotJoined.length)
+              ],
             ephemeral: true,
           });
         }
