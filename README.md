@@ -34,7 +34,7 @@ OPENAI_API_KEY=your_openai_api_key
 
 To use the available commands, simply type the command followed by the required input. For example:
 
-- For GPT-4 chatbot: `/gpt4 query:"your query"' 
+- For GPT-4 chatbot: `/gpt4 query:"your query"` 
 - For OpenAI Images: `/wskbosch prompt:"your image prompt"`
 - For Dota 2 Stack: `/dota number: "the number of people you want to play" timeout:"The time you're willing to wait to play"`
 - For Opt-in: `/optin`
