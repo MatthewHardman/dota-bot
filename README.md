@@ -8,7 +8,7 @@ This Discord bot is designed to enhance your server experience by offering a var
 
 ## Features
 
-- **GPT-4 Chatbot**: Utilize the "/gpt4" command to ask questions or get information from the GPT-4 API. The bot sends your query to the GPT-4 API and returns a response based on the AI model. It also allows users to input their time zone and adjusts the scheduled time in the query accordingly.
+- **GPT-4 Chatbot**: Utilize the "/gpt4" command to ask questions or get information from the GPT-4 API. The bot sends your query to the GPT-4 API and returns a response based on the AI model. 
 
 - **OpenAI Images**: Generate images based on a text prompt using the "/wskbosch" command. The bot sends the provided prompt to the OpenAI Images API and returns an image URL based on the AI model's output.
 
@@ -34,9 +34,9 @@ OPENAI_API_KEY=your_openai_api_key
 
 To use the available commands, simply type the command followed by the required input. For example:
 
-- For GPT-4 chatbot: `/gpt4 query:"your query" timezone:your_timezone_offset`
+- For GPT-4 chatbot: `/gpt4 query:"your query"' 
 - For OpenAI Images: `/wskbosch prompt:"your image prompt"`
-- For Dota 2 Stack: `/dota`
+- For Dota 2 Stack: `/dota number: "the number of people you want to play" timeout:"The time you're willing to wait to play"`
 - For Opt-in: `/optin`
 - For Opt-out: `/optout`
 
