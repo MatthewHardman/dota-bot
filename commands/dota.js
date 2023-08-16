@@ -98,11 +98,11 @@ module.exports = {
     let replyLeaveSad = `Please, don't go.`;
 
     function buildReplyList() {
-      replyPlayingListBase = `\nSo far the following ${idArray.length} people have said they will play: \n - ${owner.username}`;
+      replyPlayingListBase = `\nSo far the following ${idArray.length} people have said they will play:\n- ${owner.username}`;
       let buildingReply = replyPlayingListBase;
 
       for (let i = 0; i < usernameArray.length; i++) {
-        buildingReply = buildingReply.concat(`\n - `, `${usernameArray[i]}`);
+        buildingReply = buildingReply.concat(`\n- `, `${usernameArray[i]}`);
       }
 
       return buildingReply;
@@ -206,7 +206,7 @@ module.exports = {
 
         replyMessage = `*The stack didn't form in time for ${owner.username}.  However, the following people might still be interested in playing:*`;
         for (let i = 0; i < idArray.length; i++) {
-          replyMessage = replyMessage.concat(`\n - `, `<@${idArray[i]}>`);
+          replyMessage = replyMessage.concat(`\n- `, `<@${idArray[i]}>`);
         }
 
         message.reply(replyStackTimeout);
