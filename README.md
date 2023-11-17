@@ -8,7 +8,7 @@ This Discord bot is designed to enhance your server experience by offering a var
 
 ## Features
 
-- **GPT-4 Chatbot**: Utilize the "/gpt4" command to ask questions or get information from the GPT-4 API. The bot sends your query to the GPT-4 API and returns a response based on the AI model. 
+- **GPT-4 Chatbot**: Utilize the "/gpt4" command to ask questions or get information from the GPT-4 API. The bot sends your query to the GPT-4 API and returns a response based on the AI model.
 
 - **OpenAI Images**: Generate images based on a text prompt using the "/wskbosch" command. The bot sends the provided prompt to the OpenAI Images API and returns an image URL based on the AI model's output.
 
@@ -20,13 +20,8 @@ This Discord bot is designed to enhance your server experience by offering a var
 
 1. Clone the repository or download the source code.
 2. Run `npm install` to install the required dependencies.
-3. Create a `.env` file in the root directory and add your Discord bot token and OpenAI API key:
-
-```
-DISCORD_BOT_TOKEN=your_discord_bot_token
-OPENAI_API_KEY=your_openai_api_key
-```
-
+3. Copy `.env.example` to `.env` in the root directory and follow the instructions in the file.
+4. Run `node deploy-commands.js` to update the bot's commands.
 4. Run `node index.js` to start the bot.
 5. Invite the bot to your server and start using the commands!
 
@@ -34,11 +29,10 @@ OPENAI_API_KEY=your_openai_api_key
 
 To use the available commands, simply type the command followed by the required input. For example:
 
-- For GPT-4 chatbot: `/gpt4 query:"your query"` 
+- For GPT-4 chatbot: `/gpt4 query:"your query"`
 - For OpenAI Images: `/wskbosch prompt:"your image prompt"`
 - For Dota 2 Stack: `/dota number: "the number of people you want to play" timeout:"The time you're willing to wait to play"`
 - For Opt-in: `/optin`
 - For Opt-out: `/optout`
 
 Enjoy using the bot and exploring the various commands it offers!
-

@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
+require('dotenv').config();
 //const { token } = require("./config.json");
 const token = process.env.token;
 
@@ -43,16 +44,16 @@ for (const file of eventFiles) {
 // client.on("messageCreate", async (message) => {
 //   // Ignore messages from bots
 //   if (message.author.bot) return;
-  
+
 //   // Check if the message is a reply and mentions the bot
 //   if (message.reference && message.mentions.has(client.user)) {
 //     console.log("Funny test commencing...");
 //     // Get the replied message
 //     const repliedMessage = await message.channel.messages.fetch(message.reference.messageId);
-    
+
 //     // Call the isFunnyJoke function with the replied message content
 //     const result = await isFunnyJoke(repliedMessage.content);
-    
+
 //     // Reply with the result ("yes" or "no")
 //     message.reply(result);
 //   }
