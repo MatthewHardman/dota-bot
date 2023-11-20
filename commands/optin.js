@@ -10,16 +10,16 @@ module.exports = {
     const dootersRole = interaction.guild.roles.cache.find(role => role.name.toLowerCase() === 'dooters');
 
     if (!dootersRole) {
-      await interaction.reply("The 'dooters' role does not exist in this server.");
+      await interaction.reply({content: "The 'dooters' role does not exist in this server.", ephemeral: true});
       return;
     }
 
     if (interaction.member.roles.cache.has(dootersRole.id)) {
-      await interaction.reply("You already have the 'dooters' role.");
+      await interaction.reply({content: "You already have the 'dooters' role.", ephemeral: true});
       return;
     }
 
     await interaction.member.roles.add(dootersRole);
-    await interaction.reply("You have been given the 'dooters' role.");
+    await interaction.reply({content: "You have been given the 'dooters' role.", ephemeral: true});
   },
 };
