@@ -10,6 +10,9 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMessageReactions,
   ],
+  allowedMentions: {
+    parse: ['roles', 'users'],
+  },
 });
 
 client.commands = new Collection();
