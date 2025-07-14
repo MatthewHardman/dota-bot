@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.21.0",
     "openai": "^3.2.1"
   },
   "devDependencies": {
-    "npm-check-updates": "^16.14.6"
+    "npm-check-updates": "^18.0.1"
   }
 }
