@@ -5,6 +5,7 @@ const {
   ActionRowBuilder,
   ButtonStyle,
   ComponentType,
+  MessageFlags,
 } = require("discord.js");
 
 module.exports = {
@@ -62,14 +63,15 @@ module.exports = {
 
     const row = new ActionRowBuilder().addComponents(joinButton, leaveButton);
 
-    const message = await interaction.reply({
+    const response = await interaction.reply({
       content:
         `Hello <@&${role.id}>, **${owner.username}** would like to play with a **stack of ${stackSizeText}** ${formattedEndTime}! Please click below if you'd like to be pinged when a stack forms. \n*(` +
         owner.username +
         `, You do not have to click the button.)*`,
-      fetchReply: true,
+      withResponse: true,
       components: [row],
     });
+    const message = response.resource.message;
 
     const collector = message.createMessageComponentCollector({
       ComponentType: ComponentType.Button,
@@ -128,7 +130,7 @@ module.exports = {
         if (currentUser == owner) {
           i.reply({
             content: replyJoinOwner,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         } else if (!idArray.includes(currentUser.id)) {
           console.log(`Adding ${currentUser.username} to list`);
@@ -136,7 +138,7 @@ module.exports = {
           usernameArray.push(currentUser.username);
           i.reply({
             content: replyJoinThanks,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
 
           //set the reply message to the base message before appending the list of users to it
@@ -155,7 +157,7 @@ module.exports = {
               replyAlreadyJoined[
                 Math.floor(Math.random() * replyAlreadyJoined.length)
               ],
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         }
         if (idArray.length == stackSize) {
@@ -168,7 +170,7 @@ module.exports = {
         if (currentUser == owner) {
           i.reply({
             content: replyLeaveOwner,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         } else if (idArray.includes(currentUser.id)) {
           console.log(`Removing ${currentUser.username} from list`);
@@ -180,7 +182,7 @@ module.exports = {
           i.reply({
             content:
               replyLeaveSad[Math.floor(Math.random() * replyLeaveSad.length)],
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
 
           //set the reply message to the base message before appending the list of users to it
@@ -199,7 +201,7 @@ module.exports = {
               replyLeaveNotJoined[
                 Math.floor(Math.random() * replyLeaveNotJoined.length)
               ],
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         }
       }
